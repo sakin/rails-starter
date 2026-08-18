@@ -1,10 +1,10 @@
 import '@hotwired/turbo'
 import { Application } from '@hotwired/stimulus'
 
-// Eagerly load each ViewComponent sidecar's index.js, which imports its
-// styles.css, so Vite bundles all component styles (nested ones included).
-// There is no index.js at the app/views/components root, so no self-match.
-import.meta.glob('../../views/components/**/index.js', { eager: true })
+// Bundle every ViewComponent sidecar's styles.css (nested ones included) so
+// per-component authored CSS ships with the app. `eager` is required because
+// CSS cannot be dynamically imported.
+import.meta.glob('../../views/components/**/styles.css', { eager: true })
 
 window.Stimulus = Application.start()
 

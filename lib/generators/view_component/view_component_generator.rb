@@ -8,8 +8,9 @@
 #   rails generate view_component admin/sidebar title
 #
 # Each component is a folder under `app/views/components` holding `component.rb`,
-# `component.html.erb`, `preview.rb`, `styles.css` and `index.js`, plus a
-# component spec under `spec/views/components`.
+# `component.html.erb`, `preview.rb` and `styles.css`, plus a component spec
+# under `spec/views/components`. Sidecar styles are bundled by an entrypoint glob
+# over `**/styles.css`, so no per-component JS shim is generated.
 class ViewComponentGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
 
@@ -29,10 +30,6 @@ class ViewComponentGenerator < Rails::Generators::NamedBase
 
   def create_styles_file
     template "styles.css.tt", File.join(components_dir, "styles.css")
-  end
-
-  def create_assets_shim
-    template "index.js.tt", File.join(components_dir, "index.js")
   end
 
   def create_component_spec

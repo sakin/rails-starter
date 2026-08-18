@@ -27,15 +27,15 @@ RSpec.describe(ViewComponentGenerator, type: :generator) do
     template = file("app/views/components/post_card/component.html.erb")
     preview = file("app/views/components/post_card/preview.rb")
     styles = file("app/views/components/post_card/styles.css")
-    assets = file("app/views/components/post_card/index.js")
     spec = file("spec/views/components/post_card_component_spec.rb")
 
     expect(component).to be_exist
     expect(template).to be_exist
     expect(preview).to be_exist
     expect(styles).to be_exist
-    expect(assets).to be_exist
     expect(spec).to be_exist
+    # No per-component JS shim: styles are bundled by an entrypoint glob.
+    expect(file("app/views/components/post_card/index.js")).not_to be_exist
   end
 
   it "stamps the component into the sidecar convention" do

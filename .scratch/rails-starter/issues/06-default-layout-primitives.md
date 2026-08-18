@@ -14,7 +14,8 @@
 ## Conventions to follow (set by 03, per PRD §4.3)
 
 - Wrapper components live under `app/views/components/<name>/` with `component.rb`,
-  `component.html.erb`, `preview.rb`, `styles.css` and `index.js`.
+  `component.html.erb`, `preview.rb` and `styles.css`. Styles are bundled by an
+  entrypoint glob, so there's no per-component JS shim.
 - Declarative args via `Dry::Initializer` (`option :title`), not hand-written initializers.
 - Render components with the `component "name", ...` helper (views) and relative
   `component ".nested", ...` (inside components).

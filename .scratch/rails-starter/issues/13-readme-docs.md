@@ -15,7 +15,7 @@
 
 Document the view layer per PRD §3/§4.3: ViewComponents live in
 `app/views/components` (sidecar: `component.rb`, `component.html.erb`, `preview.rb`,
-`styles.css`, `index.js`), rendered via the `component "name"` helper and relative
+`styles.css`, bundled by an entrypoint glob), rendered via the `component "name"` helper and relative
 `component ".nested"` inside components, with `Dry::Initializer` args and
 `class_for`-scoped CSS. The `component`/`dry-initializer`/relative-rendering choices
 now differ from the view_component-contrib gem defaults (which use

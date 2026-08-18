@@ -16,13 +16,13 @@
 
 Adopted `view_component` 4 + `view_component-contrib` (base classes, sidecarable previews, component-scoped i18n) + `dry-initializer` + `lookbook` (dev-only). Realigned to the PRD's §4.3 conventions (differs from the contrib gem's `app/frontend/components` default by design — see PRD §3, which reserves that path for JS-framework components).
 
-- Sidecar convention under `app/views/components/<name>/` with `component.rb`, `component.html.erb`, `preview.rb`, `styles.css`, `index.js` (the last is a Vite asset shim importing `styles.css`).
+- Sidecar convention under `app/views/components/<name>/` with `component.rb`, `component.html.erb`, `preview.rb`, `styles.css` (exactly the PRD §4.3 set — no per-component JS; styles are bundled by an entrypoint glob over `**/styles.css`).
 - Base classes `ApplicationViewComponent` (extends `Dry::Initializer`, includes `DbQueryGuard` + `ComponentsHelper`) and `ApplicationViewComponentPreview`.
 - `component "name", ...` view helper and relative `component ".nested"` rendering (inside a component), resolving under the enclosing namespace; demo `Banner` renders nested `Banner::Badge` relatively.
 - Declarative args via `option :name` (dry-initializer).
-- Custom generator `rails generate view_component NAME [attrs]` (`lib/generators/view_component`, a `NamedBase`) emitting component, template, preview, `styles.css`, `index.js`, and a `:view_component` spec.
+- Custom generator `rails generate view_component NAME [attrs]` (`lib/generators/view_component`, a `NamedBase`) emitting component, template, preview, `styles.css`, and a `:view_component` spec.
 - Component-scoped i18n via contrib (`t(".key")` → `en.view_components.<scope>`).
 - `DbQueryGuard` raises `DbQueryGuard::UncheckedQueryError` when a component fires SQL during render unless it sets `self.allow_db_queries = true` (upstream `raise_on_db_queries` was removed in ViewComponent 4).
-- Lookbook mounted only when `Rails.env.development?` at `/lookbook` (the PRD's `LOOKBOOK_ENABLED`/`/dev/lookbook` flag is deferred; see 10). Entrypoint globs `app/views/components/**/index.js` so nested component styles bundle.
+- Lookbook mounted only when `Rails.env.development?` at `/lookbook` (the PRD's `LOOKBOOK_ENABLED`/`/dev/lookbook` flag is deferred; see 10). Entrypoint globs `app/views/components/**/styles.css` so nested component styles bundle.
 
 Specs at `spec/views/components` (type `:view_component`), `spec/generators`, and `spec/routing` (routing asserts the preview surface is absent outside development).
