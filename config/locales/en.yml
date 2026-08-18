@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  # Component-scoped strings for ViewComponents. The contrib i18n helper scopes
+  # `t(".key")` under `view_components.<component path>`, so `Banner::Component`
+  # reads `view_components.banner`.
+  view_components:
+    banner:
+      eyebrow: "Rails Starter"
+      badge: "ViewComponent"

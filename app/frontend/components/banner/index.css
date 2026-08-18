@@ -1,0 +1,13 @@
+.c-banner-root {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-base-content);
+  border-radius: 1rem;
+}
+
+.c-banner-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}

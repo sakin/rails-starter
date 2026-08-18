@@ -11,4 +11,11 @@ Rails.application.routes.draw do
 
   # Themed default page (frontend-swap reference; superceded by the layout in 06).
   root "pages#home"
+
+  # Component previews are development-only surfaces: never route/mount them in
+  # production. Lookbook is only in the :development bundle, so referencing the
+  # engine here is safe and stays inert in test (which draws these routes).
+  if Rails.env.development?
+    mount Lookbook::Engine, at: "/lookbook"
+  end
 end
