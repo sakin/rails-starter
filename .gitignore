@@ -30,6 +30,17 @@
 
 /public/assets
 
+# Vite build output (built per environment into public/vite-*).
+/public/vite-dev
+/public/vite-test
+/public/vite
+# Frontend package manager installs and logs.
+/node_modules
+/npm-debug.log*
+/bun-debug.txt
+# Vite-ruby generated type definitions.
+/vite-env.d.ts
+
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 

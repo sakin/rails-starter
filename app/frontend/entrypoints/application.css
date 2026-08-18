@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@source "../../views/**/*.{html,erb}";
+@source "../controllers/**/*.{js,ts}";
+@source "./**/*.{html,erb}";
+
+/* daisyUI is a Tailwind v4 plugin. Pin to the package's JS entry directly to
+ * side-step the @plugin resolution quirk (the bare `@plugin "daisyui"` form can
+ * resolve to the package's browser CSS export instead of its JS plugin entry
+ * and fail the build). */
+@plugin "daisyui/index.js" {
+  themes: light --default, dark;
+}

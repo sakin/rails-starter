@@ -18,9 +18,12 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%# Frontend built by Vite (see app/frontend + vite.config.mts). In dev the
+        client tag connects to the Vite dev server for hot reloading; the
+        stylesheet and script reference the compiled entrypoints. %>
+    <%= vite_client_tag %>
+    <%= vite_stylesheet_tag "application" %>
+    <%= vite_javascript_tag "application" %>
   </head>
 
   <body>
