@@ -18,9 +18,10 @@ module RailsStarter
 
     # View components live under `app/views/components` as sidecar folders — one
     # folder per component holding `component.rb`, `component.html.erb`,
-    # `preview.rb`, `styles.css` and `index.js`. `app/views` is a Rails view
-    # autoload root, so register the components subdirectory explicitly as a Ruby
-    # autoload root.
+    # `preview.rb` and `styles.css` (styles are bundled by an entrypoint glob over
+    # `**/styles.css`; no per-component JS). `app/views` is a Rails view autoload
+    # root, so register the components subdirectory explicitly as a Ruby autoload
+    # root.
     config.autoload_paths << Rails.root.join("app", "views", "components")
 
     # ViewComponent wiring (see issue 03).

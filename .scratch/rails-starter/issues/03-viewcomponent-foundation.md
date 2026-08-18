@@ -22,7 +22,7 @@ Adopted `view_component` 4 + `view_component-contrib` (base classes, sidecarable
 - Declarative args via `option :name` (dry-initializer).
 - Custom generator `rails generate view_component NAME [attrs]` (`lib/generators/view_component`, a `NamedBase`) emitting component, template, preview, `styles.css`, and a `:view_component` spec.
 - Component-scoped i18n via contrib (`t(".key")` → `en.view_components.<scope>`).
-- `DbQueryGuard` raises `DbQueryGuard::UncheckedQueryError` when a component fires SQL during render unless it sets `self.allow_db_queries = true` (upstream `raise_on_db_queries` was removed in ViewComponent 4).
+- `DbQueryGuard` raises `DbQueryGuard::UncheckedQueryError` when a component fires SQL during render unless it sets `self.allow_db_queries = true` (upstream `raise_on_db_queries` was removed in ViewComponent 4). Queries are attributed to the innermost rendering component, so a nested `allow_db_queries = true` is honored even under a guarded parent.
 - Lookbook mounted only when `Rails.env.development?` at `/lookbook` (the PRD's `LOOKBOOK_ENABLED`/`/dev/lookbook` flag is deferred; see 10). Entrypoint globs `app/views/components/**/styles.css` so nested component styles bundle.
 
 Specs at `spec/views/components` (type `:view_component`), `spec/generators`, and `spec/routing` (routing asserts the preview surface is absent outside development).
