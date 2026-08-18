@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe(Banner::Component, type: :component) do
+RSpec.describe(Banner::Component, type: :view_component) do
   subject(:rendered) { render_inline(component) }
 
   let(:component) { described_class.new(title: "Welcome") }
@@ -18,11 +18,11 @@ RSpec.describe(Banner::Component, type: :component) do
     expect(rendered).to have_text("Rails Starter")
   end
 
-  it "renders a nested component" do
-    expect(rendered).to have_css(".c-badge-root", text: "ViewComponent")
+  it "renders a nested component relatively with the component helper" do
+    expect(rendered).to have_css(".c-banner--badge-root", text: "ViewComponent")
   end
 
-  it "requires its named arguments" do
-    expect { described_class.new }.to raise_error(ArgumentError)
+  it "requires its declared arguments" do
+    expect { described_class.new }.to raise_error(KeyError, /required/)
   end
 end

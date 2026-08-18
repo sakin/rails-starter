@@ -1,5 +1,5 @@
 <div class="<%= class_for("root") %>">
   <p class="<%= class_for("eyebrow") %>"><%= eyebrow %></p>
   <h2><%= title %></h2>
-  <%= render Badge::Component.new(label: badge_label) %>
+  <%= component ".badge", label: badge_label %>
 </div>

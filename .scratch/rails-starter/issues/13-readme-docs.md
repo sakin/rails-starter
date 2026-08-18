@@ -10,3 +10,13 @@
 - [ ] A glossary captures the starter/template/project vocabulary.
 - [ ] Two ADRs record the frontend-build choice and the authentication choice.
 - [ ] The README notes Kamal's optionality and the Litestream accessory alternative.
+
+## Note (03 realignment)
+
+Document the view layer per PRD §3/§4.3: ViewComponents live in
+`app/views/components` (sidecar: `component.rb`, `component.html.erb`, `preview.rb`,
+`styles.css`, `index.js`), rendered via the `component "name"` helper and relative
+`component ".nested"` inside components, with `Dry::Initializer` args and
+`class_for`-scoped CSS. The `component`/`dry-initializer`/relative-rendering choices
+now differ from the view_component-contrib gem defaults (which use
+`app/frontend/components`), so document the reasoning.

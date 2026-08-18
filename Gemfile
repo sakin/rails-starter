@@ -50,6 +50,9 @@ gem "view_component"
 # Extension on top of ViewComponent: typed initializer args, wrapped helper,
 # preview base classes, and a project-owned component generator.
 gem "view_component-contrib"
+# Declarative component arguments: `option :title` instead of a hand-written
+# initializer (per the starter's PRD view-layer conventions).
+gem "dry-initializer"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

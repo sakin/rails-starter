@@ -5,12 +5,16 @@
 # `ViewComponentContrib::Base` already wires in:
 #   - component-scoped i18n via `t(".key")` -> `en.view_components.<scope>`;
 #   - the `#wrapped` helper for container wrappers.
+# `Dry::Initializer` gives declarative arguments (`option :title`).
 # `DbQueryGuard` makes stray database queries raise during rendering.
 class ApplicationViewComponent < ViewComponentContrib::Base
-  include DbQueryGuard
+  extend Dry::Initializer
 
-  # Stimulus identifier for this component's controller: `Nav::UserInfo::Component`
-  # -> `nav--user-info`.
+  include DbQueryGuard
+  include ComponentsHelper
+
+  # Stimulus identifier for this component's controller: `Banner::Badge::Component`
+  # -> `banner--badge`.
   def controller_name
     @controller_name ||= self.class.name.sub("::Component", "").underscore.split("/").join("--")
   end

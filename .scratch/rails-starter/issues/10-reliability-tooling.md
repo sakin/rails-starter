@@ -10,3 +10,9 @@
 - [ ] The style/formatting tooling is runnable from a commit hook.
 - [ ] Frozen-string behavior and typed-config formwork are in place; hooks are installed/installable.
 - [ ] (Stretch) a mailer preview is surfaced in Lookbook.
+
+## Note (03 realignment)
+
+Lookbook is currently mounted at `/lookbook`, gated by `Rails.env.development?`.
+The PRD's `LOOKBOOK_ENABLED` flag and `/dev/lookbook` path were deferred out of 03;
+confirm the mount path/flag here (and for the stretch mailer preview) before finalizing.

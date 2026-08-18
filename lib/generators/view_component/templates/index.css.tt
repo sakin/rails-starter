@@ -1,4 +1,0 @@
-.c-<%= @class_token %>-root {
-  /* Component-scoped styles. Pairs with the `class_for("root")` token from
-     component.rb; adjust the tokens in the template to match. */
-}

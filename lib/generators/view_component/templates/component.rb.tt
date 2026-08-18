@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-class <%= @component_constant %>::Component < ApplicationViewComponent
-  # ViewComponent 4 dropped the catch-all initializer, so components declare
-  # their arguments explicitly. Add the keyword arguments this component needs.
-  def initialize(title:)
-    @title = title
-  end
-
-  attr_reader :title
+class <%= class_name %>::Component < ApplicationViewComponent
+  with_collection_parameter :<%= singular_name %>
+<% if attributes.any? -%>
+<% attributes.each do |attr| -%>
+  option :<%= attr.name %>
+<% end -%>
+<% else -%>
+  # Declare this component's arguments with Dry::Initializer, for example:
+  #   option :title
+<% end -%>
 end

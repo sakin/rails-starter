@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Fails loudly if a component fires database queries while it renders, unless
-# the component opts out with `.allow_db_queries!`. Keeps data access out of the
-# view layer by default and catches accidental N+1s at the source.
+# the component opts out with `self.allow_db_queries = true`. Keeps data access
+# out of the view layer by default and catches accidental N+1s at the source.
 module DbQueryGuard
   extend ActiveSupport::Concern
 
@@ -16,25 +16,20 @@ module DbQueryGuard
       super(
         "#{component_class} fired database queries while rendering. " \
           "Components should stay free of data access. If this is deliberate, " \
-          "opt the component out with `.allow_db_queries!`."
+          "opt the component out with `self.allow_db_queries = true`."
       )
     end
   end
 
   included do
-    # Whether queries fired during rendering should raise. Defaults to true.
-    class_attribute :check_db_queries, default: true
-  end
-
-  class_methods do
-    # Allow this component to reach into the database while rendering.
-    def allow_db_queries!
-      self.check_db_queries = false
-    end
+    # Opt a component into data access during rendering:
+    #   self.allow_db_queries = true
+    # The guard stays on by default for every other component.
+    class_attribute :allow_db_queries, default: false
   end
 
   def render_in(view_context, ...)
-    return super unless self.class.check_db_queries
+    return super if self.class.allow_db_queries
 
     queries = []
     listener = lambda do |_name, _started, _finished, _id, payload|

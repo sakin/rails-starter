@@ -2,7 +2,6 @@
 
 @source "../../views/**/*.{html,erb}";
 @source "../controllers/**/*.{js,ts}";
-@source "../components/**/*.{html,erb}";
 @source "./**/*.{html,erb}";
 
 /* daisyUI is a Tailwind v4 plugin. Pin to the package's JS entry directly to

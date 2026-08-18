@@ -1,5 +1,3 @@
-<%# Component templates live in a sidecar `component.html.erb`. The root element
-    uses the scoped `class_for` helper so component styles never collide. %>
 <div class="<%%= class_for("root") %>">
-  <p><%%= title %></p>
+  <!-- <%= class_name %> component template -->
 </div>

@@ -34,9 +34,13 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
 
-  # ViewComponent render helpers for `type: :component` specs (spec/components).
-  config.include ViewComponent::TestHelpers, type: :component
-  config.include Capybara::RSpecMatchers, type: :component
+  # ViewComponent render helpers for `type: :view_component` specs
+  # (spec/views/components), inferred from their location.
+  config.include ViewComponent::TestHelpers, type: :view_component
+  config.include Capybara::RSpecMatchers, type: :view_component
+  config.define_derived_metadata(file_path: %r{/spec/views/components}) do |metadata|
+    metadata[:type] = :view_component
+  end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

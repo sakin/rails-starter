@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe(DbQueryGuard, type: :component) do
+RSpec.describe(DbQueryGuard, type: :view_component) do
   # A component that reaches into the database while rendering.
   class GuardedQueryComponent < ApplicationViewComponent
     def call
@@ -8,9 +8,10 @@ RSpec.describe(DbQueryGuard, type: :component) do
     end
   end
 
-  # A component that deliberately opts out of the guard.
+  # A component that deliberately opts out of the guard with the PRD-recommended
+  # `self.allow_db_queries = true` form.
   class AllowedQueryComponent < ApplicationViewComponent
-    allow_db_queries!
+    self.allow_db_queries = true
 
     def call
       "count=#{ActiveRecord::Base.connection.exec_query("SELECT 1 AS one").rows}"
@@ -22,7 +23,7 @@ RSpec.describe(DbQueryGuard, type: :component) do
       .to raise_error(DbQueryGuard::UncheckedQueryError, /database queries/)
   end
 
-  it "allows data access when the component opts out" do
+  it "does not raise when the component opts out with self.allow_db_queries = true" do
     expect(render_inline(AllowedQueryComponent.new)).to have_text(/\d+/)
   end
 end

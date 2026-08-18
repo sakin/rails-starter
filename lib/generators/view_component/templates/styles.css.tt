@@ -1,0 +1,4 @@
+.c-<%= component_class_token %>-root {
+  /* Component-scoped styles. Pairs with the `c-<%= component_class_token %>-root`
+     token from class_for("root") in component.rb; adjust tokens to match. */
+}

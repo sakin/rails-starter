@@ -16,21 +16,21 @@ module RailsStarter
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks generators])
 
-    # View components live under `app/frontend/components` as sidecar folders —
-    # one folder per component holding `component.rb`, `component.html.erb`,
-    # `preview.rb` and `index.css`. Register that directory as a Ruby autoload
-    # root (it sits under `app/frontend` which Rails would otherwise treat as a
-    # namespace, not a plain load path).
-    config.autoload_paths << Rails.root.join("app", "frontend", "components")
+    # View components live under `app/views/components` as sidecar folders — one
+    # folder per component holding `component.rb`, `component.html.erb`,
+    # `preview.rb`, `styles.css` and `index.js`. `app/views` is a Rails view
+    # autoload root, so register the components subdirectory explicitly as a Ruby
+    # autoload root.
+    config.autoload_paths << Rails.root.join("app", "views", "components")
 
     # ViewComponent wiring (see issue 03).
-    config.view_component.generate.path = "app/frontend/components"
+    config.view_component.generate.path = "app/views/components"
     config.view_component.generate.sidecar = true
     config.view_component.generate.preview = true
     config.view_component.generate.parent_class = "ApplicationViewComponent"
     # Previews and components live in the same sidecar folders, so the two
     # directories are one and the same.
-    config.view_component.previews.paths << Rails.root.join("app", "frontend", "components")
+    config.view_component.previews.paths << Rails.root.join("app", "views", "components")
 
     # Configuration for the application, engines, and railties goes here.
     #
