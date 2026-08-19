@@ -50,6 +50,18 @@ RSpec.describe RegistrationForm, type: :form do
       expect(form.errors[:password]).to be_present
     end
 
+    it "queues a welcome notification when the account is created" do
+      form = RegistrationForm.new(email_address: "sara@example.com", password: "password")
+
+      expect { form.save }.to have_enqueued_mail(NotificationsMailer, :welcome)
+    end
+
+    it "queues no welcome notification when the account is invalid" do
+      form = RegistrationForm.new(email_address: "", password: "password")
+
+      expect { form.save }.not_to have_enqueued_mail(NotificationsMailer, :welcome)
+    end
+
     it "never persists a partial user on failure (no state drift)" do
       form = RegistrationForm.new(email_address: "", password: "")
 

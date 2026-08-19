@@ -21,6 +21,14 @@ RSpec.describe "Registration sign-up", type: :request do
       expect(response).to redirect_to(root_path)
     end
 
+    it "queues a welcome email on sign-up" do
+      expect {
+        post registration_path, params: {
+          registration: { email_address: "sara@example.com", password: "password" }
+        }
+      }.to have_enqueued_mail(NotificationsMailer, :welcome).with(User.last)
+    end
+
     it "sets a session cookie so the account is authenticated right away" do
       post registration_path, params: {
         registration: { email_address: "sara@example.com", password: "password" }

@@ -3,5 +3,6 @@
 # Keep thin — the visible lookup/signing live in the layout (ticket 06).
 class AccountController < ApplicationController
   def show
+    @account = authorize User.find(params[:user_id] || Current.user.id), with: AccountPolicy
   end
 end

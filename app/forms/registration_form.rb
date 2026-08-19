@@ -17,6 +17,7 @@ class RegistrationForm
     return false unless valid?
 
     user.save!
+    WelcomeNotification.deliver(user: user)
     true
   end
 
