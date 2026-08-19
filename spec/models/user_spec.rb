@@ -63,4 +63,12 @@ RSpec.describe User, type: :model do
       expect { user.destroy }.to change(Session, :count).by(-1)
     end
   end
+
+  describe "#revoke_all_sessions!" do
+    it "destroys every session belonging to the user" do
+      user.save!
+      create_list(:session, 2, user: user)
+      expect { user.revoke_all_sessions! }.to change(user.sessions, :count).to(0)
+    end
+  end
 end
