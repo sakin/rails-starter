@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+# Rename the starter's baked-in app name (module, Kamal deploy service/image,
+# PWA manifest, Docker image refs). Run `bin/rename_to --help` for the manual
+# fallback checklist. Re-runs are safe (idempotent).
+app_name = ARGV.shift
+abort "Usage: bin/rename_to <app-name>   (or --help)" if app_name.nil?
+exec "bin/rails", "rename_to[#{app_name}]"
