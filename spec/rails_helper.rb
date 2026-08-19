@@ -38,6 +38,9 @@ RSpec.configure do |config|
   # (spec/views/components), inferred from their location.
   config.include ViewComponent::TestHelpers, type: :view_component
   config.include Capybara::RSpecMatchers, type: :view_component
+  # Named route helpers (new_session_path, account_path, ...) used when asserting
+  # links rendered inside components.
+  config.include Rails.application.routes.url_helpers, type: :view_component
   config.define_derived_metadata(file_path: %r{/spec/views/components}) do |metadata|
     metadata[:type] = :view_component
   end

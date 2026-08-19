@@ -38,6 +38,15 @@ RSpec.describe "Session sign-in/sign-out", type: :request do
       follow_redirect!
       expect(response.body).to include("Try another email address or password")
     end
+
+    it "renders the failed-sign-in flash through the shared layout primitives" do
+      post session_path, params: { email_address: user.email_address, password: "wrong" }
+
+      follow_redirect!
+      expect(response.body).to include("c-flash-root")
+      expect(response.body).to include('class="alert alert-error"')
+      expect(response.body).to include("c-nav-root")
+    end
   end
 
   describe "DELETE /session" do

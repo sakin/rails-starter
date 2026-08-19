@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Rails Starter" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Rails Starter">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Frontend built by Vite (see app/frontend + vite.config.mts). In dev the
-        client tag connects to the Vite dev server for hot reloading; the
-        stylesheet and script reference the compiled entrypoints. %>
-    <%= vite_client_tag %>
-    <%= vite_stylesheet_tag "application" %>
-    <%= vite_javascript_tag "application" %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
-</html>
+<%# The default layout is a ViewComponent (Layout::Component) rendering the
+    full HTML document: shared nav, flash region, and the authored page as the
+    main content. The component owns the <head> tags (meta, Vite, CSRF) so every
+    page renders through the same primitives. %>
+<%= render Layout::Component.new(
+      title: content_for(:title) || "Rails Starter",
+      head: content_for(:head),
+      application_name: "Rails Starter"
+    ) do %>
+  <%= yield %>
+<% end %>

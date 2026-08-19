@@ -2,6 +2,11 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
+    # Resolve the signed-in state for *every* request, not just protected ones,
+    # so the shared layout can render auth-aware nav without firing queries
+    # during view render (see DbQueryGuard). `require_authentication` then only
+    # steers guests away.
+    before_action :resume_session
     before_action :require_authentication
     helper_method :authenticated?
   end
@@ -14,11 +19,11 @@ module Authentication
 
   private
     def authenticated?
-      resume_session
+      Current.session.present?
     end
 
     def require_authentication
-      resume_session || request_authentication
+      request_authentication unless Current.session
     end
 
     def resume_session
@@ -26,7 +31,9 @@ module Authentication
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      # Eager-load the user so the guarded layout/nav can read the identity
+      # (Current.user) without a query firing during component render.
+      Session.includes(:user).find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
     end
 
     def request_authentication

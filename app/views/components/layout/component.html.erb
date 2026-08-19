@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="<%= application_name %>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= helpers.csrf_meta_tags %>
+    <%= helpers.csp_meta_tag %>
+    <%= raw(head) %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= helpers.vite_client_tag %>
+    <%= helpers.vite_stylesheet_tag "application" %>
+    <%= helpers.vite_javascript_tag "application" %>
+  </head>
+  <body class="<%= class_for("root") %>">
+    <%= component "nav" %>
+    <%= component "flash" %>
+    <main class="<%= class_for("main") %>">
+      <%= content %>
+    </main>
+  </body>
+</html>

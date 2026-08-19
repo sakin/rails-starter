@@ -1,0 +1,7 @@
+<div class="<%= class_for("root") %>">
+  <% entries.each do |type, message| %>
+    <div role="alert" class="alert <%= alert_class(type) %>">
+      <span><%= message %></span>
+    </div>
+  <% end %>
+</div>

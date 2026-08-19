@@ -1,0 +1,28 @@
+.c-nav-root {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-base-100);
+  border-bottom: 1px solid var(--color-base-300);
+}
+
+.c-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+}
+
+.c-nav-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.c-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

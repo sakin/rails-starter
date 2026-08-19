@@ -1,0 +1,13 @@
+.c-layout-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.c-layout-main {
+  flex: 1;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}

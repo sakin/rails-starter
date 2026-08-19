@@ -16,7 +16,7 @@ class ApplicationViewComponent < ViewComponentContrib::Base
   # Stimulus identifier for this component's controller: `Banner::Badge::Component`
   # -> `banner--badge`.
   def controller_name
-    @controller_name ||= self.class.name.sub("::Component", "").underscore.split("/").join("--")
+    @controller_name ||= self.class.name.sub("::Component", "").underscore.tr("_", "-").split("/").join("--")
   end
 
   # A scoped CSS class token so component styles never collide across folders.

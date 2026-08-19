@@ -12,10 +12,14 @@ const controllers = import.meta.glob('../controllers/**/*_controller.js', { eage
 
 for (const path in controllers) {
   const module = controllers[path]
-  let name = path
+  // Derive the Stimulus identifier from the filename: `theme_controller.js`
+  // -> `theme`, `hello_controller.js` -> `hello`. Plain glob keys carry the
+  // extension, so the `_controller` and `.js` suffixes must both be stripped.
+  const name = path
     .split('/')
     .pop()
-    .replace(/Controller$/, '')
+    .replace(/\.js$/, '')
+    .replace(/_controller$/, '')
     .replace(/^./, (c) => c.toLowerCase())
   window.Stimulus.register(name, module.default)
 }

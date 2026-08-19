@@ -1,0 +1,17 @@
+<header class="<%= class_for("root") %>" data-controller="theme">
+  <div class="<%= class_for("inner") %>">
+    <%= link_to application_name, root_path, class: class_for("brand") %>
+    <nav class="<%= class_for("links") %>">
+      <% if signed_in? %>
+        <%= link_to "Account", account_path, class: "btn btn-ghost btn-sm" %>
+        <%= button_to "Sign out", session_path, method: :delete, class: "btn btn-outline btn-sm", data: { turbo_confirm: "Sign out?" } %>
+      <% else %>
+        <%= link_to "Sign in", new_session_path, class: "btn btn-ghost btn-sm" %>
+        <%= link_to "Sign up", new_registration_path, class: "btn btn-primary btn-sm" %>
+      <% end %>
+      <%= button_tag type: "button", class: "btn btn-ghost btn-sm", data: { action: "click->theme#toggle" }, aria: { label: "Toggle theme" } do %>
+        <span data-theme-target="label">Theme</span>
+      <% end %>
+    </nav>
+  </div>
+</header>
