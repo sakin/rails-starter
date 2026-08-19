@@ -67,6 +67,12 @@
       "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
       "computedHash": "4a02bd01030d5ed6a5040c0382b9f56fbf02c7c8b8fd68aa1bcc55628963f760"
     },
+    "layered-rails": {
+      "source": "palkan/skills",
+      "sourceType": "github",
+      "skillPath": "layered-rails/skills/layered-rails/SKILL.md",
+      "computedHash": "1f8d39e10ae3d51352ca6856a41133f57ed01fc446304f411952959b124275dc"
+    },
     "prototype": {
       "source": "mattpocock/skills",
       "sourceType": "github",
