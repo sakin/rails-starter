@@ -3,10 +3,12 @@
 require "spec_helper"
 
 RSpec.describe "bin/dev + Procfile.dev" do
-  ROOT = File.expand_path("../..", __dir__)
+  def root
+    File.expand_path("../..", __dir__)
+  end
 
   def read(rel)
-    File.read(File.join(ROOT, rel))
+    File.read(File.join(root, rel))
   end
 
   it "runs the Rails server and the Vite watcher together via Foreman" do
@@ -23,6 +25,6 @@ RSpec.describe "bin/dev + Procfile.dev" do
 
   it "keeps a no-manual-JS-runtime setup (Bun shipped in the bundle)" do
     expect(read("config/vite.json")).to include('"viteBinPath": "bin/bun-vite"')
-    expect(File).to be_executable(File.join(ROOT, "bin/bun-vite"))
+    expect(File).to be_executable(File.join(root, "bin/bun-vite"))
   end
 end

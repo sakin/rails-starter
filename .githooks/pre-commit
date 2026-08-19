@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Style pre-commit hook, installed into .git/hooks/pre-commit by bin/setup.
+# Lints the staged Ruby files so the repo stays RuboCop-clean automatically.
+set -euo pipefail
+
+staged_ruby="$(
+  git diff --cached --name-only --diff-filter=ACMR |
+    grep -E '\.(rb|rake|gemspec)$|(^|/)Gemfile$|(^|/)Rakefile$' || true
+)"
+
+if [[ -n "$staged_ruby" ]]; then
+  # shellcheck disable=SC2086
+  bin/rubocop $staged_ruby
+fi

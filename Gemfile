@@ -99,4 +99,12 @@ group :test do
   gem "n_plus_one_control"
   # Test-suite profiling
   gem "stackprof"
+  # Non-atomic-IO / transactional-side-effect guard: raises when code triggers
+  # background jobs, mail, outbound HTTP, cache writes, etc. inside a DB
+  # transaction (which could roll back and strand the side effect). [https://github.com/palkan/isolator]
+  gem "isolator", require: false
+
+  # `isolator`'s network adapter (sniffer) requires this now-bundled gem; no
+  # longer part of Ruby's default gems since Ruby 4.0.
+  gem "benchmark"
 end

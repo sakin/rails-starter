@@ -24,6 +24,18 @@ FileUtils.chdir APP_ROOT do
   system! "bin/rails db:prepare"
   system! "bin/rails db:reset" if ARGV.include?("--reset")
 
+  puts "\n== Installing git hooks =="
+  if Dir.exist?(File.join(APP_ROOT, ".git"))
+    hooks_dir = File.join(APP_ROOT, ".git", "hooks")
+    FileUtils.mkdir_p(hooks_dir)
+    source_hook = File.join(APP_ROOT, ".githooks", "pre-commit")
+    target_hook = File.join(hooks_dir, "pre-commit")
+    FileUtils.cp(source_hook, target_hook)
+    FileUtils.chmod(0o755, target_hook)
+  else
+    puts "  (no .git directory; skipping pre-commit hook install)"
+  end
+
   puts "\n== Removing old logs and tempfiles =="
   system! "bin/rails log:clear tmp:clear"
 
