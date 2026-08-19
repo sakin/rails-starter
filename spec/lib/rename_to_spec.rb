@@ -18,16 +18,16 @@ RSpec.describe RenameTo do
 
   describe ".names" do
     it "derives slug, module, and display forms from a snake_case name" do
-      expect(described_class.names("my_app")).to eq(
+      expect(described_class.names("my_app").deconstruct_keys(nil)).to eq(
         slug: "my_app", module: "MyApp", display: "My App"
       )
     end
 
     it "normalises dashed and TitleCase input" do
-      expect(described_class.names("my-app")).to eq(
+      expect(described_class.names("my-app").deconstruct_keys(nil)).to eq(
         slug: "my_app", module: "MyApp", display: "My App"
       )
-      expect(described_class.names("SimpleTaxes")).to eq(
+      expect(described_class.names("SimpleTaxes").deconstruct_keys(nil)).to eq(
         slug: "simple_taxes", module: "SimpleTaxes", display: "Simple Taxes"
       )
     end

@@ -11,11 +11,10 @@
 # assert them intentionally keep reading "Rails Starter", so a renamed app still
 # boots and passes the suite. See `.help` for the manual fallback checklist.
 module RenameTo
-  OLD = {
-    slug: "rails_starter",
-    module: "RailsStarter",
-    display: "Rails Starter"
-  }.freeze
+  Name = Data.define(:slug, :module, :display)
+
+  # The starter's baked-in naming forms that get replaced by a rename.
+  OLD = Name.new(slug: "rails_starter", module: "RailsStarter", display: "Rails Starter")
 
   # The four config/debug surfaces that get renamed.
   TARGET_FILES = %w[
@@ -32,11 +31,7 @@ module RenameTo
     #   "my-app"  -> { slug: "my_app",  module: "MyApp",   display: "My App" }
     def names(app_name)
       words = camel_words(app_name).map(&:capitalize)
-      {
-        slug: words.join("_").downcase,
-        module: words.join,
-        display: words.join(" ")
-      }
+      Name.new(slug: words.join("_").downcase, module: words.join, display: words.join(" "))
     end
 
     # Split an app name into its component words on underscore/dash and camel
@@ -52,11 +47,11 @@ module RenameTo
     # derived from app_name. Returns a report (per-file list of changed tokens).
     # Idempotent: running again with the same name is a no-op.
     def apply!(files:, app_name:)
-      new_names = names(app_name)
+      old_names, new_names = OLD, names(app_name)
       mapping = {
-        OLD[:slug] => new_names[:slug],
-        OLD[:module] => new_names[:module],
-        OLD[:display] => new_names[:display]
+        old_names.slug => new_names.slug,
+        old_names.module => new_names.module,
+        old_names.display => new_names.display
       }
 
       files.map do |path|
