@@ -51,8 +51,17 @@ COPY . .
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY.
+# The frontend builds via Vite run under the bundle's Bun (bundlebun ships the
+# binary and config/vite.json points viteBinPath at bin/bun-vite), so there is
+# deliberately NO Node/npm/yarn step in this image. asset build happens entirely
+# through the Ruby bundle.
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
+# The Kamal deploy config (config/deploy.yml + .kamal/) is OPTIONAL — it is
+# consumed by bin/kamal only and is never referenced by this Dockerfile, so its
+# presence or absence does not affect the build. Docker users can ignore Kamal
+# entirely and build/run this image by hand.
 
 
 
