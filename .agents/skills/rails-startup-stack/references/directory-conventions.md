@@ -17,9 +17,11 @@ services catch-all. Models hold domain logic; controllers stay thin.
 | `app/forms/` | Presentation | Complex UI forms, multi-model validation |
 | `app/policies/` | Application | Authorization decisions |
 | `app/notifications/` | Application | Unified notification (email/Slack/SMS channels) |
-| `app/views/` | Presentation | HTML rendering |
+| `app/views/controllers/<controller>/` | Presentation | Controller views, namespaced (PRD §3) |
+| `app/views/mailers/<mailer>_mailer/` | Presentation | Mailer views, namespaced (PRD §3) |
 | `app/views/components/` | Presentation | Server-rendered view components |
-| `app/mailers/` | Presentation | Email composition |
+| `app/views/layouts/` | Presentation | Layouts (incl. delegated `Layout::Component`) |
+| `app/mailers/` | Presentation | Email composition (mailer classes; their views live in `views/mailers/`) |
 | `app/jobs/` | Application | Coordinate workflow; models execute |
 | `app/channels/` | Presentation | WebSocket connections (Solid Cable) |
 | `app/frontend/` | Presentation | Vite entrypoints + Stimulus controllers; reserved for JS |
@@ -36,6 +38,14 @@ value objects, when needed, sit here too per layered-rails.
 Controllers handle HTTP concerns only — parse, authorize, delegate, redirect.
 Views render. `app/forms/` holds UI-driven form objects (e.g.
 `RegistrationForm`) that validate and persist for a specific screen.
+
+**Where views live:** controller views sit under `app/views/controllers/<controller>/`
+and mailer views under `app/views/mailers/<mailer>_mailer/` (PRD §3), rather than at
+Rails' default `app/views/<controller>/`/`app/views/<mailer>_mailer/`. Resolved
+by `append_view_path` in `ApplicationController`/`ApplicationMailer`; generators
+emit into these trees via `lib/generators/erb/` and `lib/generators/rails/`
+overrides, so no stray default-path view tree is reintroduced. Put a new
+controller view under `app/views/controllers/…`, never `app/views/<controller>/`.
 
 ### Application — `app/policies/`, `app/notifications/`, `app/jobs/`
 - `app/policies/` — authorization. `ApplicationPolicy` defines
@@ -57,7 +67,9 @@ build without changing it — see [frontend-ladder.md](frontend-ladder.md).
 ## Non-`app/` layout
 
 - `lib/` — pure, testable application logic: `lib/rename_to.rb` (the rename
-  core), `lib/litestream.rb`, `lib/generators/view_component/`.
+  core), `lib/litestream.rb`, and the project-owned generators under
+  `lib/generators/` (`view_component`, plus the `erb/` + `rails/` overrides that
+  keep generated controller/mailer views in the namespaced trees).
 - `bin/` — key binstubs include `bin/setup`, `bin/dev`, `bin/rename_to`,
   `bin/rspec`, `bin/ci`, `bin/litestream_config`, `bin/docker-entrypoint`;
   the full list is whatever `bin/rails` exposes plus the checked-in scripts under

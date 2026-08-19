@@ -39,11 +39,24 @@ lints; `bin/brakeman` and `bin/bundler-audit` scan for vulnerabilities.
 - `app/views/layouts/application.html.erb` — delegates to the shared
   `Layout::Component`, which owns the full HTML document, Vite/CSRF/CSP tags,
   nav, and flash region. Auth pages inherit it automatically.
+- `app/views/controllers/<controller>/` — controller views, namespaced under one
+  root (PRD §3), resolved via `append_view_path` in
+  `ApplicationController`. `bin/rails g` (controller/scaffold/authentication)
+  emit here via the generator overrides in `lib/generators/erb/…`, so no sibling
+  `app/views/<controller>/` tree reappears.
+- `app/views/mailers/<mailer>_mailer/` — mailer views, namespaced under one root
+  (PRD §3), resolved via `append_view_path` in `ApplicationMailer` (e.g.
+  `NotificationsMailer` → `app/views/mailers/notifications_mailer/`).
+  `bin/rails g` (mailer/authentication) emit here via
+  `lib/generators/erb/mailer/…`; mailer *layouts* still live in
+  `app/views/layouts/`.
 - `app/frontend/` — Vite entrypoints (`entrypoints/`) and Stimulus controllers
   (`controllers/`). Reserved by design for JS-side concerns; server-rendered
   UI lives in components (see `docs/adr/0001-frontend-build.md`).
 - `lib/` — pure, testable application logic: `lib/rename_to.rb`,
-  `lib/litestream.rb`, `lib/generators/view_component/`.
+  `lib/litestream.rb`, and the project-owned generators under
+  `lib/generators/` (`view_component`, plus the `erb/` and `rails/` overrides
+  that keep generated views in the namespaced trees).
 - `bin/` — binstubs: `bin/dev`, `bin/setup`, `bin/rename_to`, `bin/rspec`,
   `bin/ci`, `bin/litestream_config`, `bin/docker-entrypoint`.
 - `config/vite.json` — Vite runner and per-environment ports/output dirs.

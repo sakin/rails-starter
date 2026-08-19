@@ -16,6 +16,9 @@ module RailsStarter
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks generators])
 
+    # Load the app's generator overrides (namespaced-view paths) when generating.
+    require "rails_startup_stack/view_overrides"
+
     # View components live under `app/views/components` as sidecar folders — one
     # folder per component holding `component.rb`, `component.html.erb`,
     # `preview.rb` and `styles.css` (styles are bundled by an entrypoint glob over

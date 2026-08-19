@@ -35,6 +35,13 @@ rather than drifting to synonyms.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.
+- **controller views** — pages under `app/views/controllers/<controller>/`,
+  resolved via `append_view_path` in `ApplicationController`. `bin/rails g`
+  emits here (generator overrides in `lib/generators/erb/`).
+- **mailer views** — mail views under `app/views/mailers/<mailer>_mailer/`
+  (e.g. `NotificationsMailer` → `app/views/mailers/notifications_mailer/`),
+  resolved via `append_view_path` in `ApplicationMailer`; mailer *layouts* stay
+  in `app/views/layouts/`.
 - **theme** — the daisyUI light/dark theme chosen by a Stimulus controller
   (`theme_controller.js`) on `data-theme`, persisted in `localStorage`.
 - **Solid stack** — the default Rails runtime libraries: `solid_cache`,
