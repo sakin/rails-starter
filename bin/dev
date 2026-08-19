@@ -1,2 +1,6 @@
 #!/usr/bin/env ruby
-exec "./bin/rails", "server", *ARGV
+
+# Boot the dev stack: Rails web server and the Vite watcher together, both
+# hot-reloading, managed by Foreman. See Procfile.dev. The Vite watcher runs
+# under the bundle's Bun (bin/bun-vite); no manual Node install is needed.
+exec "foreman", "start", "-f", "Procfile.dev", *ARGV

@@ -75,6 +75,10 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
+  # Run the web server and the Vite watcher together in dev, hot-reloading
+  # both. [https://github.com/ddollar/foreman]
+  gem "foreman"
+
   # Live component/UI preview environment. Development-only so preview URLs are
   # never exposed in production. [https://lookbook.build/]
   gem "lookbook"

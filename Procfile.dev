@@ -1,0 +1,5 @@
+# Start the Rails server and the Vite dev watcher together, hot-reloading both.
+# Used by `bin/dev` (via Foreman). The Vite watcher runs under the Bun binary
+# shipped in the bundle (bin/bun-vite) — no manual Node/npm/yarn install.
+web:   bin/rails server
+vite:  bin/bun-vite dev
