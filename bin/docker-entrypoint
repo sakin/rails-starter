@@ -5,4 +5,12 @@ if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
 fi
 
+# Optional Litestream replication (default-off): only when the replica env vars
+# are present does bin/litestream_config write a config; then the server command
+# is wrapped in `litestream replicate -exec` so the primary DB continuously
+# replicates. Absent, the app runs exactly as before and nothing replicates.
+if config=$(./bin/litestream_config); then
+  exec litestream replicate -config "$config" -exec "${@}"
+fi
+
 exec "${@}"

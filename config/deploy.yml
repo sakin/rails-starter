@@ -55,6 +55,18 @@ env:
     # Use rails_starter-db for a db accessory server on same machine via local kamal docker network.
     # DB_HOST: 192.168.0.2
 
+    # Optional continuous DB backup via Litestream (OFF by default). Put the four
+    # secrets below in .kamal/secrets and reference them under env.secret, plus
+    # LITESTREAM_REGION under env.clear (and LITESTREAM_ENDPOINT for S3-compatible
+    # services). Absent, the app runs unchanged and replicates nothing.
+    # Local dev and tests never replicate. Config is rendered at container start
+    # by bin/litestream_config (gated on these vars); see lib/litestream.rb.
+    # LITESTREAM_BUCKET:
+    # LITESTREAM_ACCESS_KEY_ID:
+    # LITESTREAM_SECRET_ACCESS_KEY:
+    # LITESTREAM_REGION:
+    # LITESTREAM_ENDPOINT:
+
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
 

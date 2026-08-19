@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "tmpdir"
+
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+require "litestream"
+
+# Renders the optional Litestream config to the given path (default: a transient
+# file under the container's tmp dir) whenever replication is enabled by the
+# environment, and echoes that path. When replication is not enabled it exits
+# non-zero having written nothing, so the entrypoint's `if` treats it as off.
+# The rendered config targets only the primary app database.
+#
+# The config holds the S3 secret, so it is written to a container-local tmp path
+# by default, NOT the persistent mounted volume. Pass a path to override.
+#
+# Usage: bin/litestream_config [path]
+path = ARGV.fetch(0, File.join(Dir.tmpdir, "litestream.yml"))
+
+exit 1 unless Litestream.enabled?(ENV)
+
+File.write(path, Litestream.yaml(**Litestream.options_from_env(ENV).merge(
+  endpoint: ENV["LITESTREAM_ENDPOINT"]
+)))
+
+puts path

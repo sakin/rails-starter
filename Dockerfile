@@ -7,8 +7,17 @@
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+# Pin the Ruby version (must match .ruby-version) and the optional Litestream
+# release. Both ARGs are declared globally so they can drive a FROM stage.
 ARG RUBY_VERSION=4.0.6
+ARG LITESTREAM_VERSION=0.5.16
+
+# Litestream is OPTIONAL and OFF by default: it ships as a single static binary
+# in the final image but is only invoked when the replica env vars are present at
+# run time (see bin/docker-entrypoint). Declared FIRST so the last, default-target
+# stage stays the app's base stage; the binary is pulled in via COPY below.
+FROM litestream/litestream:$LITESTREAM_VERSION AS litestream
+
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -77,6 +86,11 @@ USER 1000:1000
 # Copy built artifacts: gems, application
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /rails /rails
+
+# Copy the pinned Litestream binary. It stays inert unless the replica env vars
+# are present at run time (bin/docker-entrypoint), so replication is off by
+# default. litestream/litestream installs /usr/local/bin/litestream.
+COPY --from=litestream /usr/local/bin/litestream /usr/local/bin/litestream
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
