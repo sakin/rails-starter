@@ -36,7 +36,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 
 # Frontend built by Vite, run by a Bun runtime bundled into the gem bundle.
 # No Node/npm/yarn anywhere — the Bun binary comes from bundlebun, versioned in
