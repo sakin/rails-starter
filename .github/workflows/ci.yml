@@ -86,5 +86,36 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Run the suite via bin/ci
+      - name: Run the suite via bin/ci (non-system)
+        env:
+          CI_SUITE: fast
         run: bin/ci
+
+  system-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libvips
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Build test frontend assets
+        run: bin/bun-vite build --mode test
+
+      - name: Run RSpec system specs
+        run: bin/rspec spec/system
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore
