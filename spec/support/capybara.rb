@@ -16,7 +16,14 @@ Capybara.register_driver :cuprite do |app|
     js_errors: true,
     # Headless by default; open a window when HEADLESS=0/false/no.
     headless: %w[0 false no].exclude?(ENV.fetch("HEADLESS", "1")),
-    browser_options: { "no-sandbox" => nil } # required in some containerised CI
+    # Flags required in containerised CI: no-sandbox (unprivileged runner) and
+    # disable-dev-shm-usage/disable-gpu (tiny /dev/shm on GitHub runners makes
+    # Chromium tabs crash or hang once a page grows).
+    browser_options: {
+      "no-sandbox" => nil,
+      "disable-dev-shm-usage" => nil,
+      "disable-gpu" => nil
+    }
   )
 end
 
