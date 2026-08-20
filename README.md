@@ -33,19 +33,19 @@ lints; `bin/brakeman` and `bin/bundler-audit` scan for vulnerabilities.
 
   These choices diverge deliberately from the `view_component-contrib` gem's
   default of `app/frontend/components`: the starter reserves `app/frontend/`
-  for JS-framework components (PRD §3), so server-rendered components live under
+  for JS-framework components, so server-rendered components live under
   `app/views/components/` and use a custom `component` helper +
   `dry-initializer` args + relative rendering rather than the gem's defaults.
 - `app/views/layouts/application.html.erb` — delegates to the shared
   `Layout::Component`, which owns the full HTML document, Vite/CSRF/CSP tags,
   nav, and flash region. Auth pages inherit it automatically.
 - `app/views/controllers/<controller>/` — controller views, namespaced under one
-  root (PRD §3), resolved via `append_view_path` in
+  root, resolved via `append_view_path` in
   `ApplicationController`. `bin/rails g` (controller/scaffold/authentication)
   emit here via the generator overrides in `lib/generators/erb/…`, so no sibling
   `app/views/<controller>/` tree reappears.
-- `app/views/mailers/<mailer>_mailer/` — mailer views, namespaced under one root
-  (PRD §3), resolved via `append_view_path` in `ApplicationMailer` (e.g.
+- `app/views/mailers/<mailer>_mailer/` — mailer views, namespaced under one root,
+  resolved via `append_view_path` in `ApplicationMailer` (e.g.
   `NotificationsMailer` → `app/views/mailers/notifications_mailer/`).
   `bin/rails g` (mailer/authentication) emit here via
   `lib/generators/erb/mailer/…`; mailer *layouts* still live in
