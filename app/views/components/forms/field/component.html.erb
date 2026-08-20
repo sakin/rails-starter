@@ -1,3 +1,5 @@
+<!-- Wrapper markup mirrors the former `FormField::Component`; the scoped
+     c-forms--field-* tokens come from class_for. -->
 <% if content.present? || label.present? || error_message.present? %>
   <div class="<%= class_for("root") %>">
     <% if label.present? %>

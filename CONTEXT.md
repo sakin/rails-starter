@@ -29,9 +29,15 @@ rather than drifting to synonyms.
   typed args, and rendered via a small custom `component "name"` helper
   (relative `component ".nested"` inside a component). "Component" never means a
   JS-framework component; see the divergence note in the README.
-- **primitive** — a thin daisyUI wrapper component (layout, nav, flash, form
-  field, submit button, banner) that stays thin in source and delegates styling
-  to daisyUI utility classes.
+- **primitive** — a thin daisyUI wrapper component (layout, nav, flash,
+  banner) that stays thin in source and delegates styling to daisyUI utility
+  classes. Form primitives are a family of their own (see **forms family**).
+- **forms family** — the `Forms::*` form-input view components under
+  `app/views/components/forms/`: a dumb `Forms::Form` (`<form>` renderer), the
+  `Forms::Field` label/control/error wrapper, typed controls (`Forms::Text`,
+  `Textarea`, `Select`, `Checkbox`, `Radio`, `Toggle`), and `Forms::Submit`. 
+  Rendered standalone with the `component` helper or composed per-field by the
+  `FormBuilder` builder via `form_with(builder: FormBuilder)`.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.

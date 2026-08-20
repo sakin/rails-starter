@@ -1,13 +1,12 @@
-  
 <h1 class="text-2xl font-bold">Create your account</h1>
 <%= form_with model: @form, url: registration_path, class: "mt-4 flex max-w-sm flex-col gap-4" do |form| %>
-  <%= component "form_field", label: "Email address", error_message: @form.errors[:email_address].first do %>
+  <%= component "forms/field", label: "Email address", error_message: @form.errors[:email_address].first do %>
     <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", class: "input input-bordered w-full" %>
   <% end %>
-  <%= component "form_field", label: "Password", error_message: @form.errors[:password].first do %>
+  <%= component "forms/field", label: "Password", error_message: @form.errors[:password].first do %>
     <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter a password", maxlength: 72, class: "input input-bordered w-full" %>
   <% end %>
-  <%= component "submit_button", label: "Sign up" %>
+  <%= component "forms/submit", label: "Sign up" %>
 <% end %>
 <p class="mt-6">
   <%= link_to "Already have an account? Sign in", new_session_path, class: "link link-primary" %>

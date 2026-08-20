@@ -1,0 +1,7 @@
+/* The forms--text controller drives the daisyUI `label-floating` state so the
+   label stays raised while the input is focused or holds a value. daisyUI 5
+   already floats `label-floating` on `:focus`/`:placeholder-shown`; this class
+   mirrors that so the controller's explicit `is-floating` also applies. */
+.label-floating.is-floating .label-text {
+  transform: translateY(-0.4rem) scale(0.85);
+}

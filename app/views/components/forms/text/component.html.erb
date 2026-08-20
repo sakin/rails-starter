@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+<% if floating_label %>
+  <label class="label-floating" data-controller="<%= controller_name %>">
+    <%= text_field_tag name, value, **html_options.merge(
+      data: {
+        action: "focus->#{controller_name}#focus blur->#{controller_name}#blur input->#{controller_name}#input",
+        "#{controller_name}_target": "input"
+      }
+    ) %>
+    <span class="label-text"><%= label %></span>
+  </label>
+<% else %>
+  <%= text_field_tag name, value, **html_options %>
+<% end %>

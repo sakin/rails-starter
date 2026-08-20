@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe(SubmitButton::Component, type: :view_component) do
+RSpec.describe(Forms::Submit::Component, type: :view_component) do
   subject(:rendered) { render_inline(described_class.new(label: "Sign in")) }
 
   it "renders a submit button with daisyUI styling" do
