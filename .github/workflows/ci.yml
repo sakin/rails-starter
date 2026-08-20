@@ -106,10 +106,7 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Build test frontend assets
-        run: bin/bun-vite build --mode test
-
-      - name: Run RSpec system specs
+      - name: Run RSpec system specs (Vite auto-builds on demand)
         run: bin/rspec spec/system
 
       - name: Keep screenshots from failed system tests
