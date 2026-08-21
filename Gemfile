@@ -53,6 +53,9 @@ gem "view_component-contrib"
 # Declarative component arguments: `option :title` instead of a hand-written
 # initializer (per the starter's PRD view-layer conventions).
 gem "dry-initializer"
+# Merge conflicting Tailwind/daisyUI utility classes in the StyleVariants
+# post-processor so caller overrides beat component defaults.
+gem "tailwind_merge"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

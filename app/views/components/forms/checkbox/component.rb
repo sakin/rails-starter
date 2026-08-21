@@ -7,14 +7,14 @@ class Forms::Checkbox::Component < ApplicationViewComponent
   option :name
   option :value, default: -> { "1" }
   option :checked, default: -> { false }
-  option :input_html, default: -> { {} }
 
-  def html_options
-    input_html.merge(
+  def root_options
+    element_options(
       type: "checkbox",
       name: name,
       value: value,
-      checked: checked
+      checked: checked,
+      class: "checkbox"
     )
   end
 end

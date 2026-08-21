@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
-# Bare multi-line text area. Renders only the `<textarea>` element.
+# Bare multi-line text area. Renders only the `<textarea>` element from the
+# essential `name`/`value`/`rows` options plus the base attrs.
 class Forms::Textarea::Component < ApplicationViewComponent
   option :name
   option :value, default: -> { nil }
   option :rows, default: -> { 3 }
-  option :input_html, default: -> { {} }
 
-  def html_options
-    input_html.merge(name: name, rows: rows)
+  def root_options
+    element_options(
+      name: name,
+      rows: rows,
+      class: "textarea textarea-bordered w-full"
+    )
   end
 end

@@ -1,0 +1,23 @@
+<!-- Preview template for the full forms family. Uses `component` exactly as the
+     app does so Lookbook renders byte-for-byte what views render. -->
+<%= component "forms/form", action: "/", method: :post do %>
+  <%= component "forms/field", label: "Text input" do %>
+    <%= component "forms/text", name: "text" %>
+  <% end %>
+  <%= component "forms/field", label: "Textarea" do %>
+    <%= component "forms/textarea", name: "textarea" %>
+  <% end %>
+  <%= component "forms/field", label: "Select" do %>
+    <%= component "forms/select", name: "select", options: [["Option one", "one"], ["Option two", "two"]] %>
+  <% end %>
+  <%= component "forms/field", label: "Checkbox" do %>
+    <%= component "forms/checkbox", name: "checkbox" %>
+  <% end %>
+  <%= component "forms/field", label: "Radio" do %>
+    <%= component "forms/radio", name: "radio", value: "1" %>
+  <% end %>
+  <%= component "forms/field", label: "Toggle" do %>
+    <%= component "forms/toggle", name: "toggle", checked: true %>
+  <% end %>
+  <%= component "forms/submit", label: "Submit" %>
+<% end %>

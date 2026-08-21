@@ -63,6 +63,33 @@ component folder mirrored).
   `c-banner--badge-root`) so styles never collide across folders.
 - `controller_name` — the Stimulus identifier (`Banner::Badge::Component` →
   `banner--badge`).
+- `StyleVariants` (`style do ... end`) — a declarative DSL for class variants,
+  reconciled by a `tailwind_merge` postprocessor (caller classes win; daisyUI
+  classes pass through, Tailwind utilities conflict-resolve). First proof:
+  `Forms::Submit` (`:primary` / `:outline` / `:ghost`).
+- The common **component arguments** (`attrs`, `class`, `id`, `data`) and the
+  `element_options(defaults)` merge — see [Component arguments](#component-arguments) below.
+
+## Component arguments
+
+Every component accepts four root-level arguments, merged by `element_options`
+into one attribute hash for the root element (spread with `tag.attributes(**...)`
+or passed to a tag helper):
+
+| Arg | Semantics |
+|-----|-----------|
+| `attrs:` | Pass-through HTML attributes (`placeholder`, `required`, `data-*` beyond the promoted ones, `aria-*`, `test_id`, ...). |
+| `class:` | Extra classes, joined over the component defaults and `attrs[:class]`, then Tailwind-merged (caller wins). |
+| `id:` | Sugar for `attrs[:id]`; not merged, first provided wins. |
+| `data:` | Deep-merged (caller wins per-key) over the component's own `data` and `attrs[:data]`. |
+
+Merge order: **component defaults + `style(...)` variants first, then `class:`/`attrs[:class]`,
+then `data:`/`attrs[:data]`**. So a caller's `class:`/`data:` always override the
+component, while daisyUI classes are preserved. A component renders its own
+essential options (e.g. `Forms::Text`'s `name`/`value`/`type`) and forwards the
+rest of the caller's `attrs` unchanged. A component that *delegates* attributes
+down to a child keeps a single `attrs` and may split into `input_attrs`-style
+named bags only for that delegation.
 
 ## The forms family
 

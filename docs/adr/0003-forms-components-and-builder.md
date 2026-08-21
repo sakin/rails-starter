@@ -43,7 +43,29 @@ and re-home the old primitives inside it:
 folder path (`/` → `--`), so the id always equals the component's `controller_name`
 (no special-casing between server CSS tokens and client controllers). Flat
 standalone controllers (`theme`, `hello`) are unchanged. The `Forms::Text`
-floating label is the first demonstration, wired with `data-controller="<%= controller_name %>"`.
+floating label is the first demonstration, wired with `data-controller="<%= controller_name %>"`,
+and is exercised by a real-browser system test (`spec/system/forms/floating_label_spec.rb`)
+driving the loaded Stimulus controller, not just a markup assertion.
+
+**Common component arguments** (`app/views/components/application_view_component.rb`):
+every component accepts `attrs:` (pass-through HTML attrs) plus the promoted
+`class:`, `id:`, and `data:`. `element_options(defaults)` merges them into the
+root element's attribute hash: component defaults and style-variant classes first,
+then caller `class:`/`attrs[:class]`, then deep-merged `data:`/`attrs[:data]`,
+so a caller's classes/data always override the component while its daisyUI classes
+are preserved.
+
+**StyleVariants on the base** (`include ViewComponentContrib::StyleVariants`,
+postprocessed by `tailwind_merge`): a declarative `style do ... end` DSL replaces
+hand-joined class strings for a component's visual variants. `Forms::Submit`
+(`:primary` / `:outline` / `:ghost`) is the proof. `tailwind_merge` reconciles
+Tailwind utility conflicts (caller wins); daisyUI classes are not utilities and
+pass through on a last-wins join, so the merger's value is utility dedupe plus the
+declarative variant structure — not daisyUI conflict resolution.
+
+**Opinionated previews:** `Forms::Preview` renders the whole family through a
+sidecar `preview.html.erb` template using the same `component` calls the app uses,
+so Lookbook output matches app output (and the nested controls actually render).
 
 ## Considered options
 
@@ -55,6 +77,15 @@ floating label is the first demonstration, wired with `data-controller="<%= cont
   either way.
 - **Component controllers in `app/frontend/controllers/`** — rejected: it split a
   component's behaviour from its folder and forced hand-maintained ids.
+- **Style Variants deferred** — this was the earlier hesitation (daisyUI already
+  supplies the variant classes); we kept it after all for the declarative variant
+  shape and utility-conflict reconciliation. If it shows no value later, the
+  include is a one-line removal — a starter-appropriate "keep the capability, prove
+  it small" trade-off.
+- **Preview templates vs `render_component`** — the composite `Forms::Preview`
+  can't hand-join nested component renders, so a preview template (which renders
+  like the app) was chosen over a hand-assembled block. Single-component previews
+  keep the simpler `render_component`.
 
 ## Consequences
 

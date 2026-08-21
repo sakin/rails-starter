@@ -6,77 +6,81 @@
 # a proper labelled control in one call. Pass it with `form_with builder: FormBuilder`.
 #
 # The `<form>` tag itself is emitted by `form_with`; this builder only owns the
-# fields, so it composes independently of `Forms::Form`.
+# fields, so it composes independently of `Forms::Form`. Styling classes live on
+# each control component (their `element_options`); the builder forwards the rest
+# of the caller's options as `attrs:` (placeholder, required, autofocus, data, ...).
 class FormBuilder < ActionView::Helpers::FormBuilder
   def text_field(attribute, options = {})
-    field_options, input_html = split_options(options, :value, :type)
+    field_options, attrs = split_options(options, :value, :type)
     control = @template.component "forms/text",
                                  name: field_name(attribute),
-                                 value: input_html.delete(:value) || object_value(attribute),
-                                 type: input_html.delete(:type) || "text",
-                                 input_html: { class: "input input-bordered w-full" }.merge(input_html)
+                                 value: attrs.delete(:value) || object_value(attribute),
+                                 type: attrs.delete(:type) || "text",
+                                 attrs: attrs
     wrap_field(attribute, field_options, control)
   end
 
   def text_area(attribute, options = {})
-    field_options, input_html = split_options(options, :value)
+    field_options, attrs = split_options(options, :value)
     control = @template.component "forms/textarea",
                                  name: field_name(attribute),
-                                 value: input_html.delete(:value) || object_value(attribute),
-                                 input_html: { class: "textarea textarea-bordered w-full" }.merge(input_html)
+                                 value: attrs.delete(:value) || object_value(attribute),
+                                 attrs: attrs
     wrap_field(attribute, field_options, control)
   end
 
   def select(attribute, choices = nil, options = {}, html_options = {})
-    field_options, = split_options(options)
+    field_options, attrs = split_options(options)
     control = @template.component "forms/select",
                                  name: field_name(attribute),
                                  options: choices,
                                  selected: object_value(attribute),
-                                 input_html: { class: "select select-bordered w-full" }.merge(html_options)
+                                 attrs: attrs.merge(html_options)
     wrap_field(attribute, field_options, control)
   end
 
-  def check_box(attribute, options = {}, checked_value = "1", unchecked_value = "0")
-    field_options, input_html = split_options(options)
+  # Matches Forms::Checkbox::Component's contract: a bare checkbox with value "1"
+  # and a boolean `checked:` (no hidden unchecked twin, unlike Rails' check_box).
+  def check_box(attribute, options = {})
+    field_options, attrs = split_options(options, :checked_value, :unchecked_value)
     control = @template.component "forms/checkbox",
                                  name: field_name(attribute),
-                                 checked: object_value(attribute) == checked_value,
-                                 input_html: { class: "checkbox" }.merge(input_html)
+                                 checked: !!object_value(attribute),
+                                 attrs: attrs
     wrap_field(attribute, field_options, control)
   end
 
   def radio_button(attribute, tag_value, options = {})
-    field_options, input_html = split_options(options)
+    field_options, attrs = split_options(options)
     control = @template.component "forms/radio",
                                  name: field_name(attribute),
                                  value: tag_value,
                                  checked: object_value(attribute) == tag_value,
-                                 input_html: { class: "radio" }.merge(input_html)
+                                 attrs: attrs
     wrap_field(attribute, field_options, control)
   end
 
   def toggle(attribute, options = {})
-    field_options, input_html = split_options(options, :value)
-    checked = input_html.delete(:value) || object_value(attribute)
+    field_options, attrs = split_options(options, :value)
+    checked = attrs.delete(:value) || object_value(attribute)
     control = @template.component "forms/toggle",
                                  name: field_name(attribute),
                                  value: "1",
                                  checked: !!checked,
-                                 input_html: { class: "toggle" }.merge(input_html)
+                                 attrs: attrs
     wrap_field(attribute, field_options, control)
   end
 
   # Method name differs from the Ruby keyword -- use `form.submit` as usual.
-  def submit(value = "Save", _options = {})
-    @template.component "forms/submit", label: value
+  def submit(value = "Save", options = {})
+    @template.component "forms/submit", label: value, variant: options.fetch(:variant, :primary)
   end
 
   private
 
   # Split caller options into builder-level keys (label/error_message) and the
-  # keys that belong on the control's HTML attributes, removing the reserved
-  # control keys (`value`, `type`, ...) from both.
+  # keys passed through to the control as `attrs`, removing the reserved control
+  # keys (`value`, `type`, `unchecked_value`, ...) from both.
   def split_options(options, *reserved)
     options = options.dup
     field_options = {}

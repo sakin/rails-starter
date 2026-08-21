@@ -8,4 +8,14 @@ RSpec.describe(Forms::Textarea::Component, type: :view_component) do
   it "renders a textarea with the given name, value, and rows" do
     expect(rendered).to have_css("textarea[name='message'][rows='4']", text: "Hello")
   end
+
+  context "with extra attrs" do
+    subject(:rendered) do
+      render_inline(described_class.new(name: "message", attrs: { required: true }))
+    end
+
+    it "passes them through" do
+      expect(rendered).to have_css("textarea[required='required']")
+    end
+  end
 end

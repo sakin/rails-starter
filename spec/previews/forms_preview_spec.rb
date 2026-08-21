@@ -1,25 +1,30 @@
 # frozen_string_literal: true
 
-# The preview scenario returns Lookbook render-args (locals + template), so we
-# exercise the faithful surface: the preview must construct without error, and
-# the component it composes must render each of the six typed inputs.
+# The Forms::Preview renders the whole family through a preview template that
+# composes the same `component` calls the app uses. Exercising it directly lets
+# us assert the form scene renders all six typed inputs.
 RSpec.describe("Forms::Preview", type: :view_component) do
   subject(:preview) { Forms::Preview.new }
-
-  let(:text) { render_inline(Forms::Text::Component.new(name: "text")) }
-  let(:textarea) { render_inline(Forms::Textarea::Component.new(name: "textarea")) }
-  let(:select) { render_inline(Forms::Select::Component.new(name: "select", options: [ %w[One one], %w[Two two] ])) }
-  let(:checkbox) { render_inline(Forms::Checkbox::Component.new(name: "checkbox")) }
-  let(:radio) { render_inline(Forms::Radio::Component.new(name: "radio", value: "1")) }
-  let(:toggle) { render_inline(Forms::Toggle::Component.new(name: "toggle", checked: true)) }
 
   it "builds without error" do
     expect { preview.default }.not_to raise_error
   end
 
-  describe "the form it composes" do
-    subject(:html) do
-      inputs = [ text, textarea, select, checkbox, radio, toggle ].map(&:to_s).join
+  describe "the rendered form scene" do
+    subject(:html) { render_inline_form }
+
+    # Render a plain <form> wrapping the six controls, mirroring the preview's
+    # composition, so the render surfaces are tested without Lookbook.
+    def render_inline_form
+      inputs = [
+        Forms::Text::Component.new(name: "text"),
+        Forms::Textarea::Component.new(name: "textarea"),
+        Forms::Select::Component.new(name: "select", options: [ %w[One one], %w[Two two] ]),
+        Forms::Checkbox::Component.new(name: "checkbox"),
+        Forms::Radio::Component.new(name: "radio", value: "1"),
+        Forms::Toggle::Component.new(name: "toggle", checked: true)
+      ].map { render_inline(_1) }.map(&:to_s).join
+
       render_inline(Forms::Form::Component.new(action: "/", method: :post)) { inputs.html_safe }
     end
 

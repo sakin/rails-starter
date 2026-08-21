@@ -9,4 +9,14 @@ RSpec.describe(Forms::Checkbox::Component, type: :view_component) do
     expect(rendered).to have_css("input[type='checkbox'][name='subscribe'][value='1']")
     expect(rendered).to have_css("input[checked='checked']")
   end
+
+  context "with extra attrs" do
+    subject(:rendered) do
+      render_inline(described_class.new(name: "subscribe", attrs: { disabled: true }))
+    end
+
+    it "passes them through" do
+      expect(rendered).to have_css("input[disabled='disabled']")
+    end
+  end
 end

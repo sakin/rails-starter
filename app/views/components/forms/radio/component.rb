@@ -6,14 +6,14 @@ class Forms::Radio::Component < ApplicationViewComponent
   option :name
   option :value
   option :checked, default: -> { false }
-  option :input_html, default: -> { {} }
 
-  def html_options
-    input_html.merge(
+  def root_options
+    element_options(
       type: "radio",
       name: name,
       value: value,
-      checked: checked
+      checked: checked,
+      class: "radio"
     )
   end
 end

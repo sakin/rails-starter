@@ -38,6 +38,12 @@ rather than drifting to synonyms.
   `Textarea`, `Select`, `Checkbox`, `Radio`, `Toggle`), and `Forms::Submit`. 
   Rendered standalone with the `component` helper or composed per-field by the
   `FormBuilder` builder via `form_with(builder: FormBuilder)`.
+- **component arguments** — the common root-level arguments every view component
+  accepts: `attrs` (pass-through HTML attributes), plus the promoted `class`,
+  `id`, and `data` (deep-merged over the component's own data). Merged by
+  `element_options` into the root element's attribute hash; a component's style
+  variants and defaults come first, so any caller-supplied `class`/`data` overrides
+  them. `id` is `attrs[:id]` sugar, not merged.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.
