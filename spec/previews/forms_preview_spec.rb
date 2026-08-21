@@ -8,6 +8,7 @@ RSpec.describe("Forms::Preview", type: :view_component) do
 
   it "builds without error" do
     expect { preview.default }.not_to raise_error
+    expect { preview.builder }.not_to raise_error
   end
 
   describe "the rendered form scene" do

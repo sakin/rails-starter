@@ -44,6 +44,9 @@ rather than drifting to synonyms.
   `element_options` into the root element's attribute hash; a component's style
   variants and defaults come first, so any caller-supplied `class`/`data` overrides
   them. `id` is `attrs[:id]` sugar, not merged.
+- **modal** — `Modal::Component`, a daisyUI `<dialog>` whose open/close need JS
+  (`dialog.showModal()`), driven by its co-located `modal` Stimulus controller —
+  the reference for a component that genuinely needs its own behaviour.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.

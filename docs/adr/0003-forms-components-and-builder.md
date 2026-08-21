@@ -38,14 +38,23 @@ and re-home the old primitives inside it:
   reserved for screen-specific form objects per directory-conventions.md.
 
 **Co-located Stimulus controllers:** a component's controller ships beside it
-(`app/views/components/forms/text/component_controller.js`) rather than in
+(e.g. `app/views/components/modal/component_controller.js`) rather than in
 `app/frontend/controllers/`. The entrypoint globs these and registers each by
 folder path (`/` → `--`), so the id always equals the component's `controller_name`
 (no special-casing between server CSS tokens and client controllers). Flat
-standalone controllers (`theme`, `hello`) are unchanged. The `Forms::Text`
-floating label is the first demonstration, wired with `data-controller="<%= controller_name %>"`,
-and is exercised by a real-browser system test (`spec/system/forms/floating_label_spec.rb`)
-driving the loaded Stimulus controller, not just a markup assertion.
+standalone controllers (`theme`, `hello`) are unchanged. `Modal` is the reference:
+a daisyUI `<dialog>` whose open/close genuinely need JS (`dialog.showModal()`),
+wired through `data-action="click->modal#open"` and exercised by a real-browser
+system test (`spec/system/modal_spec.rb`).
+
+**The floating label, in contrast, needs no JS.** `Forms::Text` with
+`floating_label:` renders daisyUI's `floating-label` wrapper (span before the
+input); daisyUI floats it with pure CSS via `:focus-within`/placeholder-shown.
+The first attempt used a stale `label-floating` class and a hand-rolled JS class,
+which visually never floated — and the system test missed it because it asserted
+a JS-driven class rather than the real float. The corrected system spec
+(`spec/system/forms/floating_label_spec.rb`) asserts the span's computed `opacity`.
+Rule: don't add a controller to a component that daisyUI can style in CSS alone.
 
 **Common component arguments** (`app/views/components/application_view_component.rb`):
 every component accepts `attrs:` (pass-through HTML attrs) plus the promoted
@@ -66,6 +75,9 @@ declarative variant structure — not daisyUI conflict resolution.
 **Opinionated previews:** `Forms::Preview` renders the whole family through a
 sidecar `preview.html.erb` template using the same `component` calls the app uses,
 so Lookbook output matches app output (and the nested controls actually render).
+A second `builder` scene (`previews/builder.html.erb`) documents the same family
+produced via `FormBuilder` (`form_with builder: FormBuilder`), showing the
+field-inclusive one-call path. `Modal::Preview` documents the JS-backed dialog.
 
 ## Considered options
 
@@ -86,6 +98,10 @@ so Lookbook output matches app output (and the nested controls actually render).
   can't hand-join nested component renders, so a preview template (which renders
   like the app) was chosen over a hand-assembled block. Single-component previews
   keep the simpler `render_component`.
+- **`Modal` as the JS-backed example instead of the floating label** — the
+  floating label turned out to be CSS-only, so it carries no controller; `Modal`
+  (a `<dialog>` that must be opened with `.showModal()`) is the reference for "a
+  component that genuinely needs its own Stimulus controller."
 
 ## Consequences
 

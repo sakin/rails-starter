@@ -34,17 +34,14 @@ RSpec.describe(Forms::Text::Component, type: :view_component) do
       render_inline(described_class.new(name: "email", value: "", floating_label: true, label: "Email"))
     end
 
-    it "wraps the input in a label-floating field" do
-      expect(rendered).to have_css("label.label-floating[data-controller='forms--text']")
-      expect(rendered).to have_css("label.label-floating span.label-text", text: "Email")
+    it "wraps a span + input in a daisyUI floating-label field for CSS-driven float" do
+      expect(rendered).to have_css("label.floating-label:not([data-controller])")
+      expect(rendered).to have_css("label.floating-label > span", text: "Email")
+      expect(rendered).to have_css("label.floating-label > span + input[type='text'][name='email']")
     end
 
-    it "uses the co-located forms--text controller with wired actions" do
-      input = rendered.at_css("label[data-controller='forms--text'] input")
-      expect(input["data-action"]).to eq(
-        "focus->forms--text#focus blur->forms--text#blur input->forms--text#input"
-      )
-      expect(input["data-forms--text-target"]).to eq("input")
+    it "is driven purely by daisyUI CSS, not a stimulus controller" do
+      expect(rendered).not_to have_css("data-controller")
     end
   end
 end

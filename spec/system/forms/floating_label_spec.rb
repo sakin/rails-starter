@@ -1,28 +1,39 @@
 # frozen_string_literal: true
 
-# Browser test for the co-located `forms--text` floating-label controller. Renders
-# the sign-in page (which uses the floating email field, autofocused), then proves
-# the label actually floats on focus/value and clears when the field empties and
-# loses focus — the JS runs in a real headless browser, not just a markup assertion.
+# Browser test that daisyUI's `floating-label` actually floats the span on
+# focus/value. daisyUI does this in CSS (via `:focus-within` / placeholder-shown),
+# so we assert the real float (the span's computed `opacity`) rather than a
+# JS-driven class — which was the mistake that hid the earlier stale-class bug.
 RSpec.describe "Floating label", type: :system do
-  matcher :be_floating do
-    match { |node| node[:class].to_s.include?("is-floating") }
+  def span_opacity(wrapper)
+    wrapper.evaluate_script("getComputedStyle(this.querySelector('span')).opacity").to_f
   end
 
-  it "floats the label on value and clears when emptied and blurred" do
+  def floating?(wrapper)
+    span_opacity(wrapper) > 0.1
+  end
+
+  def wait_until(seconds)
+    deadline = Time.now + seconds
+    until yield
+      expect(Time.now).to be < deadline
+      sleep 0.05
+    end
+  end
+
+  it "floats the label on value and rests when emptied and blurred" do
     visit "/session/new"
 
     field = find("input[name='email_address']")
     wrapper = field.find(:xpath, "ancestor::label[1]")
 
     field.fill_in(with: "you@example.com")
-    expect(wrapper).to be_floating
+    expect(wrapper).to satisfy { floating?(_1) }
 
-    # Empty and blur: the floating state drops.
     field.fill_in(with: "")
-    field.send_keys(:tab)
-
-    expect(wrapper).not_to be_floating
+    field.evaluate_script("this.blur()")
+    # daisyUI animates the float, so wait until the resting opacity settles.
+    wait_until(2) { !floating?(wrapper) }
   end
 
   it "floats an empty field while focused" do
@@ -32,6 +43,6 @@ RSpec.describe "Floating label", type: :system do
     wrapper = field.find(:xpath, "ancestor::label[1]")
 
     field.click
-    expect(wrapper).to be_floating
+    expect(wrapper).to satisfy { floating?(_1) }
   end
 end

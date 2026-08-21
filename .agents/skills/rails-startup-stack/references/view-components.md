@@ -118,26 +118,32 @@ A view component that needs client behaviour ships its Stimulus controller in
 its own folder, not in `app/frontend/controllers/`:
 
 ```
-app/views/components/forms/text/
+app/views/components/modal/
 ├── component.rb
 ├── component.html.erb
 ├── preview.rb
 ├── styles.css
-└── component_controller.js      → registered as forms--text
+└── component_controller.js      → registered as modal
 ```
 
 The entrypoint auto-globs any `<folder>/*_controller.js` under
 `app/views/components/` and registers it by folder path (`/` → `--`), so the
 id always matches the component's `controller_name`. `component_controller.js`
-is the default id (`forms/text/` → `forms--text`); a second controller there
-named `foo_controller.js` registers as `forms--text--foo`. Wire it from the
-component with `data-controller="<%= controller_name %>"` (see the `Forms::Text`
-floating-label example). Flat standalone controllers (`app/frontend/controllers/`)
-are unaffected — see [directory-conventions.md](directory-conventions.md).
+is the default id (`modal/` → `modal`); a second controller there named
+`foo_controller.js` registers as `modal--foo`. Wire it from the component with
+`data-controller="<%= controller_name %>"`. `Modal` is the reference: a daisyUI
+`<dialog>` opened/closed via `.showModal()`, driven by `data-action="click->modal#open"`.
+
+**Don't add a controller when daisyUI can do it in CSS.** The `Forms::Text`
+floating label is pure CSS under daisyUI's `floating-label` wrapper (float via
+`:focus-within`/placeholder-shown) and ships **no** `component_controller.js`.
+Flat standalone controllers (`app/frontend/controllers/`) are unaffected — see
+[directory-conventions.md](directory-conventions.md).
 
 ## Lookbook
 
 Mounted at `/lookbook` **development-only** (see `config/routes.rb`). Previews
 render there as living docs; mailer previews are also covered via
 `app/views/components/mailer/`. `Forms::Preview` documents the whole family in
-one scene. Never referenced in production.
+one scene plus a `builder` scene via `FormBuilder`; `Modal::Preview` shows the
+JS-backed dialog. Never referenced in production.
