@@ -4,9 +4,9 @@
 # through the same `component` helper the app uses (opinionated previews, so Lookbook
 # output == app output) and composes all six typed inputs plus the submit button.
 #
-# `builder` shows the same family produced with a Rails form builder via
-# `FormBuilder` (`form_with builder: FormBuilder`) — the field-inclusive path in
-# which `f.text_field :email, label: "Email"` composes `Forms::Field` + control.
+# `builder` shows the same family produced through `form_with` (which uses the
+# app-wide `ApplicationFormBuilder` default) — the field-inclusive path in which
+# `f.text_field :email, label: "Email"` composes `Forms::Field` + control.
 class Forms::Preview < ApplicationViewComponentPreview
   def default
     render_with

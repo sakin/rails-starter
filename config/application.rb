@@ -27,6 +27,11 @@ module RailsStarter
     # root.
     config.autoload_paths << Rails.root.join("app", "views", "components")
 
+    # Every `form_with` uses the app's field-inclusive form builder (composes the
+    # `forms/*` view-component family), so views don't pass `builder:` by hand.
+    # Given as a String so it constantizes after boot, when the lib constant loads.
+    config.action_view.default_form_builder = "ApplicationFormBuilder"
+
     # ViewComponent wiring (see issue 03).
     config.view_component.generate.path = "app/views/components"
     config.view_component.generate.sidecar = true

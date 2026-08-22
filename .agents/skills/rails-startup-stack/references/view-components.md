@@ -106,8 +106,12 @@ Form inputs are their own component family under `app/views/components/forms/`
 ### Rendering: standalone vs the builder
 
 - **Standalone** — use the `component` helper anywhere: `component "forms/field"` (wraps a raw control), `component "forms/select", name: :x, options: [...]`, and so on.
-- **`FormBuilder`** (`lib/form_builder.rb`) — map a `form_with` block onto the
-  family with **field-inclusive overrides**: `form.text_field :email, label: "Email"` composes `Forms::Field` + `Forms::Text` in one call. Opt out of the wrapper with `label: false`. Pass it explicitly: `form_with model: @x, builder: FormBuilder`.
+- **`ApplicationFormBuilder`** (`lib/application_form_builder.rb`) — map a
+  `form_with` block onto the family with **field-inclusive overrides**:
+  `form.text_field :email, label: "Email"` composes `Forms::Field` + `Forms::Text`
+  in one call. Opt out of the wrapper with `label: false`. It is set as the global
+  default (`config.action_view.default_form_builder`), so `form_with` uses it
+  everywhere without passing `builder:`.
 - **The split stays clean** — `form_with` emits the `<form>` tag itself (with its own builder); `Forms::Form` is only for standalone rendering. The two never conflict.
 
 `Forms::Field` also covers the common error path (pass `error_message:` or let the builder pull `object.errors[:attr].first`).
@@ -145,5 +149,5 @@ Flat standalone controllers (`app/frontend/controllers/`) are unaffected — see
 Mounted at `/lookbook` **development-only** (see `config/routes.rb`). Previews
 render there as living docs; mailer previews are also covered via
 `app/views/components/mailer/`. `Forms::Preview` documents the whole family in
-one scene plus a `builder` scene via `FormBuilder`; `Modal::Preview` shows the
-JS-backed dialog. Never referenced in production.
+one scene plus a `builder` scene via the default `ApplicationFormBuilder`;
+`Modal::Preview` shows the JS-backed dialog. Never referenced in production.

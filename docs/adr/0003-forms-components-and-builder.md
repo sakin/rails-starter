@@ -1,4 +1,4 @@
-# ADR-0003 — Forms as view components: a dumb `Forms::Form`, a `FormBuilder`, and co-located Stimulus controllers
+# ADR-0003 — Forms as view components: a dumb `Forms::Form`, an `ApplicationFormBuilder`, and co-located Stimulus controllers
 
 ## Status
 
@@ -28,14 +28,25 @@ and re-home the old primitives inside it:
 
 **Two parallel render paths that never conflict:**
 - **Standalone** — `component "forms/field"`, `component "forms/select", ...` from any view.
-- **`FormBuilder`** (`lib/form_builder.rb`, `FormBuilder < ActionView::Helpers::FormBuilder`,
-  reached via `form_with(builder: FormBuilder)`) — **field-inclusive overrides**
-  for all six controls (`text_field`, `text_area`, `select`, `check_box`,
-  `radio_button`, `toggle`) plus `submit`: `f.text_field :email, label: "Email"`
-  composes `Forms::Field` + `Forms::Text` in one call; `label: false` opts out.
-  `form_with` still owns the `<form>` tag. `lib/` is the home because a form
-  builder is framework tooling, not a domain form object — `app/forms/` stays
-  reserved for screen-specific form objects per directory-conventions.md.
+- **`ApplicationFormBuilder`** (`lib/application_form_builder.rb`,
+  `ApplicationFormBuilder < ActionView::Helpers::FormBuilder`) — **field-inclusive
+  overrides** for all six controls (`text_field`, `text_area`, `select`,
+  `check_box`, `radio_button`, `toggle`) plus `submit`:
+  `f.text_field :email, label: "Email"` composes `Forms::Field` + `Forms::Text` in
+  one call; `label: false` opts out. `form_with` still owns the `<form>` tag.
+  `lib/` is the home because a form builder is framework tooling, not a domain
+  form object — `app/forms/` stays reserved for screen-specific form objects per
+  directory-conventions.md.
+
+  It is wired as the **app-wide default** (`config.action_view.default_form_builder =
+  "ApplicationFormBuilder"`), so every `form_with` uses the component family
+  without passing `builder:`. Deliberately named `ApplicationFormBuilder` to avoid
+  colliding with `ActionView::Helpers::FormBuilder`: under an ERB view context an
+  unqualified `FormBuilder` constant resolved to Rails' built-in builder, which
+  lacks `toggle`, silently breaking `form.toggle`. Existing views only use the
+  non-overridden `email_field`/`password_field` and the `component` helper, so the
+  default doesn't change their output; forms that call the overridden methods
+  (`submit`, `select`, `check_box`, `toggle`, ...) now render components.
 
 **Co-located Stimulus controllers:** a component's controller ships beside it
 (e.g. `app/views/components/modal/component_controller.js`) rather than in
@@ -76,8 +87,9 @@ declarative variant structure — not daisyUI conflict resolution.
 sidecar `preview.html.erb` template using the same `component` calls the app uses,
 so Lookbook output matches app output (and the nested controls actually render).
 A second `builder` scene (`previews/builder.html.erb`) documents the same family
-produced via `FormBuilder` (`form_with builder: FormBuilder`), showing the
-field-inclusive one-call path. `Modal::Preview` documents the JS-backed dialog.
+produced via `form_with` (which uses the `ApplicationFormBuilder` default),
+showing the field-inclusive one-call path. `Modal::Preview` documents the
+JS-backed dialog.
 
 ## Considered options
 
@@ -107,8 +119,10 @@ field-inclusive one-call path. `Modal::Preview` documents the JS-backed dialog.
 
 - Existing auth render sites migrated from `component "form_field"` /
   `"submit_button"` to `component "forms/field"` / `"forms/submit"`.
-- `Forms::Form` staying dumb + `FormBuilder` owning fields means `form_with` and
-  standalone rendering coexist without a builder-aware `<form>` component.
+- `Forms::Form` staying dumb + `ApplicationFormBuilder` owning fields means
+  `form_with` and standalone rendering coexist without a builder-aware `<form>`
+  component. The builder is the global default, so new forms get component markup
+  by default.
 - `range`, `rating`, `file-input` are deferred beyond the core six.
 - A view component may now ship a JS controller, so `app/views/components/` is no
   longer pure server concern — documented in directory-conventions.md.

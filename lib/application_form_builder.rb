@@ -3,13 +3,17 @@
 # A Rails form builder that maps field methods to the `forms/*` view-component
 # family. Each field method composes a `Forms::Field` wrapper around a typed
 # control component, so `form.text_field :email, label: "Email address"` renders
-# a proper labelled control in one call. Pass it with `form_with builder: FormBuilder`.
+# a proper labelled control in one call.
+#
+# Made the app-wide default via `config.action_view.default_form_builder` (see
+# `config/application.rb`), so `form_with` uses it everywhere without passing a
+# `builder:`. Name avoids colliding with `ActionView::Helpers::FormBuilder`.
 #
 # The `<form>` tag itself is emitted by `form_with`; this builder only owns the
 # fields, so it composes independently of `Forms::Form`. Styling classes live on
 # each control component (their `element_options`); the builder forwards the rest
 # of the caller's options as `attrs:` (placeholder, required, autofocus, data, ...).
-class FormBuilder < ActionView::Helpers::FormBuilder
+class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   def text_field(attribute, options = {})
     field_options, attrs = split_options(options, :value, :type)
     control = @template.component "forms/text",

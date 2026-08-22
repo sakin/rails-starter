@@ -37,7 +37,8 @@ rather than drifting to synonyms.
   `Forms::Field` label/control/error wrapper, typed controls (`Forms::Text`,
   `Textarea`, `Select`, `Checkbox`, `Radio`, `Toggle`), and `Forms::Submit`. 
   Rendered standalone with the `component` helper or composed per-field by the
-  `FormBuilder` builder via `form_with(builder: FormBuilder)`.
+  `ApplicationFormBuilder` (set as the global `default_form_builder`, so plain
+  `form_with` uses it).
 - **component arguments** — the common root-level arguments every view component
   accepts: `attrs` (pass-through HTML attributes), plus the promoted `class`,
   `id`, and `data` (deep-merged over the component's own data). Merged by

@@ -2,7 +2,7 @@
 
 UserRecord = Struct.new(:email, :message, :status, keyword_init: true)
 
-RSpec.describe(FormBuilder, type: :view) do
+RSpec.describe(ApplicationFormBuilder, type: :view) do
   subject(:builder) { described_class.new(:user, user, self, {}) }
 
   let(:user) { UserRecord.new(email: "you@example.com") }

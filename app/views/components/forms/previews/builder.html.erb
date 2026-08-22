@@ -1,7 +1,8 @@
-<!-- The same forms family produced through the Rails form builder (`FormBuilder`),
-     so Lookbook documents the field-inclusive one-call path: `f.text_field :email,
-     label: "Email"` composes `Forms::Field` + the control itself. -->
-<%= form_with url: "/", builder: FormBuilder, class: "flex max-w-sm flex-col gap-4" do |form| %>
+<!-- The same forms family produced through the app's form builder
+     (`ApplicationFormBuilder`, set as the global default), so Lookbook documents
+     the field-inclusive one-call path: `f.text_field :email, label: "Email"`
+     composes `Forms::Field` + the control itself. -->
+<%= form_with url: "/", class: "flex max-w-sm flex-col gap-4" do |form| %>
   <%= form.text_field :email, label: "Email address" %>
   <%= form.select :status, [["Active", "active"], ["Archived", "archived"]], label: "Status" %>
   <%= form.text_area :bio, label: "Bio" %>
