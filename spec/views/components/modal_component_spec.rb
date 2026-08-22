@@ -2,14 +2,16 @@
 
 RSpec.describe(Modal::Component, type: :view_component) do
   subject(:rendered) do
-    render_inline(described_class.new(id: "confirm", title: "Confirm", trigger_label: "Open")) do
+    render_inline(described_class.new(id: "confirm", title: "Confirm")) do
       "Are you sure?"
     end
   end
 
-  it "renders a wrapper mounting the modal controller and an open trigger" do
+  it "renders a wrapper mounting the modal controller without an open trigger" do
     expect(rendered).to have_css("[data-controller='modal']")
-    expect(rendered).to have_css("button[data-action='click->modal#open']", text: "Open")
+    # The modal is a pure window: opening is the caller's job (via an external
+    # trigger), so the component itself renders no open button.
+    expect(rendered).not_to have_css("button[data-action='click->modal#open']")
   end
 
   it "renders a daisyUI dialog with the settled id and title" do

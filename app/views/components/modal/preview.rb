@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-# Preview the modal at /lookbook. Clicking the trigger opens the native dialog
-# via the co-located `modal` controller; the backdrop or Close dismisses it.
+# Preview the modal at /lookbook via the `previews/default.html.erb` template.
+# The external `modal-open` trigger opens the dialog by id; the backdrop or
+# Close dismisses it (the modal itself only owns dismissal).
 class Modal::Preview < ApplicationViewComponentPreview
   def default
-    render_component Modal::Component.new(id: "modal-preview", title: "Modal preview") do
-      "<p class='py-4'>This modal is opened with <code>dialog.showModal()</code> and can be dismissed from the backdrop or the Close button.</p>".html_safe
-    end
+    render_with
   end
 end

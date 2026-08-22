@@ -1,0 +1,10 @@
+  <button
+    type="button"
+    class="btn"
+    data-controller="modal-open"
+    data-modal-open-id-value="modal-preview"
+    data-action="click->modal-open#open"
+  >Open modal</button>
+<%= component "modal", id: "modal-preview", title: "Modal preview" do %>
+  <p class="py-4">This modal is opened with <code>dialog.showModal()</code> and can be dismissed from the backdrop or the Close button.</p>
+<% end %>

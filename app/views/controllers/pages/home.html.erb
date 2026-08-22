@@ -22,8 +22,16 @@
 
   <hr class="my-8">
 
+  <button
+    type="button"
+    class="btn"
+    data-controller="modal-open"
+    data-modal-open-id-value="starter-modal"
+    data-action="click->modal-open#open"
+  >Open</button>
+
   <%= component "modal", id: "starter-modal", title: "Starter modal" do %>
-    <p class="py-4">Opened with <code>dialog.showModal()</code> via the co-located <code>modal</code> Stimulus controller.</p>
+    <p class="py-4">Opened with <code>dialog.showModal()</code> via the external <code>modal-open</code> Stimulus controller; the modal itself only owns dismissal.</p>
   <% end %>
 
   <hr class="mt-8">
