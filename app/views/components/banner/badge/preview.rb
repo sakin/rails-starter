@@ -4,6 +4,6 @@
 # sidecar folder and inherits the shared preview base.
 class Banner::Badge::Preview < ApplicationViewComponentPreview
   def default
-    render_component Banner::Badge::Component.new(label: "ViewComponent")
+    render Banner::Badge::Component.new(label: "ViewComponent")
   end
 end

@@ -19,7 +19,7 @@ services catch-all. Models hold domain logic; controllers stay thin.
 | `app/notifications/` | Application | Unified notification (email/Slack/SMS channels) |
 | `app/views/controllers/<controller>/` | Presentation | Controller views, namespaced (PRD §3) |
 | `app/views/mailers/<mailer>_mailer/` | Presentation | Mailer views, namespaced (PRD §3) |
-| `app/views/components/` | Presentation | Server-rendered view components |
+| `app/views/components/` | Presentation | Server-rendered view components (sidecar set, incl. co-located `<folder>/*_controller.js` Stimulus controllers) |
 | `app/views/layouts/` | Presentation | Layouts (incl. delegated `Layout::Component`) |
 | `app/mailers/` | Presentation | Email composition (mailer classes; their views live in `views/mailers/`) |
 | `app/jobs/` | Application | Coordinate workflow; models execute |
@@ -63,6 +63,16 @@ Reserved by design for JS-side concerns: Vite `entrypoints/` and Stimulus
 `controllers/` (auto-registered from the filename). Server-rendered UI lives in
 view components; a JS framework (Turbo Mount / Inertia) mounts on the same Vite
 build without changing it — see [frontend-ladder.md](frontend-ladder.md).
+
+**Co-located component controllers — an exception.** A Stimulus controller that
+belongs to one view component may live *beside* it under
+`app/views/components/<path>/` as `component_controller.js` (or
+`<name>_controller.js` for a second controller there). The entrypoint globs
+these and registers them by their **folder path** (`/` → `--`), so
+`forms/text/component_controller.js` registers as `forms--text`, matching the
+component's `controller_name`. Flat standalone controllers (`theme`, `hello`)
+stay in `app/frontend/controllers/` unchanged. See
+[view-components.md](view-components.md) and ADR-0003.
 
 ## Non-`app/` layout
 

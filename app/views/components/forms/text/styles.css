@@ -1,0 +1,3 @@
+/* daisyUI 5 floats `floating-label > span` with pure CSS (via
+   `:placeholder-shown`/`:focus`), so the span needs no own styling here. The
+   component ships no style to keep daisyUI in control. */

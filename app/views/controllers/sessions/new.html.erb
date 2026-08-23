@@ -1,13 +1,8 @@
-  
 <h1 class="text-2xl font-bold">Sign in</h1>
 <%= form_with url: session_path, class: "mt-4 flex max-w-sm flex-col gap-4" do |form| %>
-  <%= component "form_field", label: "Email address" do %>
-    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", class: "input input-bordered w-full", value: params[:email_address] %>
-  <% end %>
-  <%= component "form_field", label: "Password" do %>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
-  <% end %>
-  <%= component "submit_button", label: "Sign in" %>
+  <%= component "forms/text", name: "email_address", value: params[:email_address], variant: :floating, label: "Email address", attrs: { required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com" } %>
+  <%= component "forms/text", name: "password", type: "password", variant: :floating, label: "Password", attrs: { required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 } %>
+  <%= component "forms/submit", label: "Sign in" %>
 <% end %>
 <p class="mt-6">
   <%= link_to "Forgot password?", new_password_path, class: "link link-primary" %>

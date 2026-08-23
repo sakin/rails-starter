@@ -47,7 +47,7 @@ RSpec.describe(ViewComponentGenerator, type: :generator) do
 
     preview = file("app/views/components/post_card/preview.rb").read
     expect(preview).to include("class PostCard::Preview < ApplicationViewComponentPreview")
-    expect(preview).to include("render_component PostCard::Component.new")
+    expect(preview).to include("render PostCard::Component.new")
 
     styles = file("app/views/components/post_card/styles.css").read
     expect(styles).to include(".c-post_card-root")
@@ -59,6 +59,14 @@ RSpec.describe(ViewComponentGenerator, type: :generator) do
     component = file("app/views/components/post_card/component.rb").read
     expect(component).to include("option :title")
     expect(component).to include("option :age")
+  end
+
+  it "emits a typed Dry::Initializer option from declared attribute types" do
+    generate("PostCard", "age:integer", "active:boolean")
+
+    component = file("app/views/components/post_card/component.rb").read
+    expect(component).to include("option :age, type: Dry::Types[\"params.integer\"]")
+    expect(component).to include("option :active, type: Dry::Types[\"params.bool\"]")
   end
 
   it "scopes nested component names and class tokens correctly" do

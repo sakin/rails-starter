@@ -1,0 +1,15 @@
+<!-- The same forms family produced through the app's form builder
+     (`ApplicationFormBuilder`, set as the global default), so Lookbook documents
+     the field-inclusive one-call path: `f.text_field :email, label: "Email"`
+     composes `Forms::Field` + the control itself. When the `show_errors` Lookbook
+     param is on, every field surfaces a validation error. -->
+<% errors = local_assigns[:errors] %>
+<%= form_with url: "/", class: "flex max-w-sm flex-col gap-4" do |form| %>
+  <%= form.text_field :email, label: "Email address", error_message: (errors ? "can't be blank" : nil) %>
+  <%= form.select :status, [["Active", "active"], ["Archived", "archived"]], label: "Status", error_message: (errors ? "can't be blank" : nil) %>
+  <%= form.text_area :bio, label: "Bio", error_message: (errors ? "is too long (maximum is 500 characters)" : nil) %>
+  <%= form.check_box :subscribe, label: "Subscribe", error_message: (errors ? "must be accepted" : nil) %>
+  <%= form.radio_button :plan, "free", label: "Free plan", error_message: (errors ? "select a plan" : nil) %>
+  <%= form.toggle :receive_updates, label: "Receive updates", error_message: (errors ? "must be set" : nil) %>
+  <%= form.submit "Submit" %>
+<% end %>

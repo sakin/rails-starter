@@ -22,6 +22,13 @@ rather than drifting to synonyms.
 - **entrypoint** — a Vite input under `app/frontend/entrypoints/`
   (`application.js`, `application.css`). Entrypoints are wired into the layout
   via `vite_client_tag`/`vite_stylesheet_tag`/`vite_javascript_tag`.
+- **preview** / **scenario** — a Lookbook showcase for a component authored in
+  its sidecar `preview.rb`; each public instance method is a **scenario**, shown
+  at `/lookbook` (dev-only mount). A static scenario renders the component via
+  ViewComponent-core `render`, so Lookbook's Source tab shows the recipe (e.g.
+  `render Nav::Component.new`). A scenario with runtime-tweakable arguments uses
+  `render_with` + an authored `preview.html.erb` / `previews/<scenario>.html.erb`
+  template + `@param` annotations, the template being what reads those locals.
 - **component** — a server-rendered view component under
   `app/views/components/<name>/`, with the sidecar set `component.rb`,
   `component.html.erb`, `preview.rb`, and `styles.css`. Built on the
@@ -29,9 +36,28 @@ rather than drifting to synonyms.
   typed args, and rendered via a small custom `component "name"` helper
   (relative `component ".nested"` inside a component). "Component" never means a
   JS-framework component; see the divergence note in the README.
-- **primitive** — a thin daisyUI wrapper component (layout, nav, flash, form
-  field, submit button, banner) that stays thin in source and delegates styling
-  to daisyUI utility classes.
+- **primitive** — a thin daisyUI wrapper component (layout, nav, flash,
+  banner) that stays thin in source and delegates styling to daisyUI utility
+  classes. Form primitives are a family of their own (see **forms family**).
+- **forms family** — the `Forms::*` form-input view components under
+  `app/views/components/forms/`: a dumb `Forms::Form` (`<form>` renderer), the
+  `Forms::Field` label/control/error wrapper, typed controls (`Forms::Text`,
+  `Textarea`, `Select`, `Checkbox`, `Radio`, `Toggle`), and `Forms::Submit`. 
+  Rendered standalone with the `component` helper or composed per-field by the
+  `ApplicationFormBuilder` (set as the global `default_form_builder`, so plain
+  `form_with` uses it).
+- **component arguments** — the common root-level arguments every view component
+  accepts: `attrs` (pass-through HTML attributes), plus the promoted `class`,
+  `id`, and `data` (deep-merged over the component's own data). Merged by
+  `element_attrs` into the root element's attribute hash; a component's style
+  variants and defaults come first, so any caller-supplied `class`/`data` overrides
+  them. `id` is `attrs[:id]` sugar, not merged.
+- **modal** — `Modal::Component`, a daisyUI `<dialog>` that owns dismissal only:
+  its co-located `modal` Stimulus controller closes it (`dialog.close()` via
+  `click->modal#close` on the backdrop/close button). Opening (`dialog.showModal()`)
+  is the caller's job via an external trigger (e.g. the flat `modal-open`
+  controller targeting the dialog `id`) — the reference for a component that
+  genuinely needs its own behaviour without owning the whole interaction.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.

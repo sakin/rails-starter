@@ -35,6 +35,9 @@ domain logic, controllers stay thin, and purpose-built layers (`app/forms`,
 - **Choosing a gem or knowing what a gem is for** — see
   [gems.md](references/gems.md) for each installed gem's role and the
   deliberately-optional next-tier additions.
+- **Operating the local dev environment** (locating/inspecting/adding a gem,
+  the `tmp/` tree, the local toolchain) — see the `local-environment` skill;
+  this skill is *placement*, that one is *operations*.
 
 For the *why* behind any of these — layered refactors, extracting a service or
 policy, running the specification test — reach for `layered-rails`. This skill

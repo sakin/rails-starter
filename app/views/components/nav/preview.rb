@@ -5,6 +5,6 @@
 # the honest, deterministic showcase.
 class Nav::Preview < ApplicationViewComponentPreview
   def default
-    render_component Nav::Component.new
+    render Nav::Component.new
   end
 end

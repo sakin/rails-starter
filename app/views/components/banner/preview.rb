@@ -4,6 +4,6 @@
 # sidecar folder and inherits the shared preview base.
 class Banner::Preview < ApplicationViewComponentPreview
   def default
-    render_component Banner::Component.new(title: "Welcome")
+    render Banner::Component.new(title: "Welcome")
   end
 end

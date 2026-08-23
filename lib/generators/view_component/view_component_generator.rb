@@ -61,4 +61,17 @@ class ViewComponentGenerator < Rails::Generators::NamedBase
 
     attributes.map { |attr| "#{attr.name}:\"#{attr.name}\"" }.join(", ")
   end
+
+  # A dry-types coercion suffix for a declared attribute type, so generated
+  # boolean/integer options coerce values at the boundary (e.g. `age:integer`
+  # -> `type: Dry::Types["params.integer"]`). Attribute types that need no
+  # coercion (strings, untyped args) get a bare `option :name`.
+  def dry_type_suffix(attr)
+    type = {
+      boolean: "params.bool",
+      integer: "params.integer"
+    }[attr.type]
+
+    type ? ", type: Dry::Types[\"#{type}\"]" : ""
+  end
 end

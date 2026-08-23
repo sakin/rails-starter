@@ -1,0 +1,10 @@
+.c-forms--field-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.c-forms--field-error {
+  font-size: 0.75rem;
+  color: var(--color-error);
+}

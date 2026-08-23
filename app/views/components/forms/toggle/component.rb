@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+# Bare toggle (daisyUI switch/checkbox). Renders the `<input type="checkbox">`
+# element; visual switch styling is daisyUI's `toggle` class applied here.
+class Forms::Toggle::Component < ApplicationViewComponent
+  option :name
+  option :value, default: -> { "1" }
+  option :checked, type: Dry::Types["params.bool"], default: -> { false }
+
+  def root_options
+    element_attrs(
+      type: "checkbox",
+      name: name,
+      value: value,
+      checked: checked,
+      class: "toggle"
+    )
+  end
+end

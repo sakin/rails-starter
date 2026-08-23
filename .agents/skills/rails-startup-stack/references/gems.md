@@ -14,7 +14,7 @@ ships. The README's "Next-tier gems" is the deliberately-optional growth list.
 | Database | `sqlite3`, `bcrypt`, `image_processing` | SQLite; password hashing (auth); image variants. |
 | Frontend build | `vite_rails`, `bundlebun` | Vite build driven by a Bun runtime shipped in the gem bundle — no Node anywhere. |
 | Hotwire | `turbo-rails`, `stimulus-rails` | Default page-rendering path + the modest JS framework (see frontend ladder). `jbuilder` for JSON. |
-| View layer | `view_component`, `view_component-contrib`, `dry-initializer` | Server-rendered components (see [view-components.md](view-components.md)). |
+| View layer | `view_component`, `view_component-contrib`, `dry-initializer`, `tailwind_merge` | Server-rendered components (see [view-components.md](view-components.md)); `tailwind_merge` reconciles style-variant class conflicts so caller overrides beat component defaults. |
 | Previews | `lookbook` | Dev-only component/mailer preview environment mounted at `/lookbook`. |
 | Auth | (hand-rolled layered auth, `bcrypt` only) | Database-backed sessions carved to the layered pattern — see `docs/adr/0002-authentication.md`. No Devise. |
 | Deploy | `kamal`, `thruster` | Both optional; their presence or absence never breaks the Docker build. |
