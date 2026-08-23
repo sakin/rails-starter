@@ -4,7 +4,7 @@
 # the preview is deterministic regardless of the ambient request flash.
 class Flash::Preview < ApplicationViewComponentPreview
   def default
-    render_component Flash::Component.new(
+    render Flash::Component.new(
       messages: { notice: "Everything worked.", alert: "Something went wrong." }
     )
   end

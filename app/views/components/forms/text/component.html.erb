@@ -1,8 +1,6 @@
-<% if floating_label %>
-  <label class="floating-label">
-    <span><%= label %></span>
-    <%= text_field_tag name, value, root_options %>
-  </label>
-<% else %>
+<% if floating? %><label class="floating-label">
+  <span><%= label %></span>
   <%= text_field_tag name, value, root_options %>
+</label>
+<% else %><%= text_field_tag name, value, root_options %>
 <% end %>

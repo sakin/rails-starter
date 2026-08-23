@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
-# Preview the text input at /lookbook, with and without a floating label.
+# Preview the text input at /lookbook via the sidecar `preview.html.erb`
+# template. The `variant` Lookbook param switches between the default bare input
+# and daisyUI's floating-label wrapper (see the `variant` option on
+# Forms::Text::Component).
 class Forms::Text::Preview < ApplicationViewComponentPreview
-  def default
-    render_component Forms::Text::Component.new(name: "email", placeholder: "you@example.com")
-  end
-
-  def floating_label
-    render_component Forms::Text::Component.new(name: "email", floating_label: true, label: "Email address")
+  # @param variant select ["default", "floating"] "Input style"
+  def default(variant: "default")
+    render_with(
+      name: "email",
+      placeholder: "you@example.com",
+      variant: variant.to_sym,
+      label: variant.to_s == "floating" ? "Email address" : nil
+    )
   end
 end

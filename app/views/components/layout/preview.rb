@@ -4,7 +4,7 @@
 # shell (nav + flash + main) renders around example body content.
 class Layout::Preview < ApplicationViewComponentPreview
   def default
-    render_component Layout::Component.new(title: "Rails Starter") do
+    render Layout::Component.new(title: "Rails Starter") do
       "<p>Example page content rendered through the default layout.</p>".html_safe
     end
   end

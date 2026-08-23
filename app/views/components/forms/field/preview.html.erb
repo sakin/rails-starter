@@ -1,0 +1,4 @@
+<% show_error = local_assigns[:show_error] %>
+<%= component "forms/field", label: "Email address", error_message: (show_error ? "can't be blank" : nil) do %>
+  <input type="email" class="input input-bordered<%= show_error ? " input-error" : "" %>" placeholder="you@example.com">
+<% end %>

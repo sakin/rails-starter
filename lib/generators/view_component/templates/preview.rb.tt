@@ -4,6 +4,6 @@
 # sidecar folder and inherits the shared preview base.
 class <%= class_name %>::Preview < ApplicationViewComponentPreview
   def default
-    render_component <%= class_name %>::Component.new(<%= example_options %>)
+    render <%= class_name %>::Component.new(<%= example_options %>)
   end
 end

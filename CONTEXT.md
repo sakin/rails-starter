@@ -22,6 +22,13 @@ rather than drifting to synonyms.
 - **entrypoint** — a Vite input under `app/frontend/entrypoints/`
   (`application.js`, `application.css`). Entrypoints are wired into the layout
   via `vite_client_tag`/`vite_stylesheet_tag`/`vite_javascript_tag`.
+- **preview** / **scenario** — a Lookbook showcase for a component authored in
+  its sidecar `preview.rb`; each public instance method is a **scenario**, shown
+  at `/lookbook` (dev-only mount). A static scenario renders the component via
+  ViewComponent-core `render`, so Lookbook's Source tab shows the recipe (e.g.
+  `render Nav::Component.new`). A scenario with runtime-tweakable arguments uses
+  `render_with` + an authored `preview.html.erb` / `previews/<scenario>.html.erb`
+  template + `@param` annotations, the template being what reads those locals.
 - **component** — a server-rendered view component under
   `app/views/components/<name>/`, with the sidecar set `component.rb`,
   `component.html.erb`, `preview.rb`, and `styles.css`. Built on the

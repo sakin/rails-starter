@@ -29,9 +29,9 @@ RSpec.describe(Forms::Text::Component, type: :view_component) do
     end
   end
 
-  context "with a floating label" do
+  context "with a floating variant" do
     subject(:rendered) do
-      render_inline(described_class.new(name: "email", value: "", floating_label: true, label: "Email"))
+      render_inline(described_class.new(name: "email", value: "", variant: :floating, label: "Email"))
     end
 
     it "wraps a span + input in a daisyUI floating-label field for CSS-driven float" do

@@ -1,7 +1,7 @@
 <h1 class="text-2xl font-bold">Sign in</h1>
 <%= form_with url: session_path, class: "mt-4 flex max-w-sm flex-col gap-4" do |form| %>
-  <%= component "forms/text", name: "email_address", value: params[:email_address], floating_label: true, label: "Email address", attrs: { required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com" } %>
-  <%= component "forms/text", name: "password", type: "password", floating_label: true, label: "Password", attrs: { required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 } %>
+  <%= component "forms/text", name: "email_address", value: params[:email_address], variant: :floating, label: "Email address", attrs: { required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com" } %>
+  <%= component "forms/text", name: "password", type: "password", variant: :floating, label: "Password", attrs: { required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 } %>
   <%= component "forms/submit", label: "Sign in" %>
 <% end %>
 <p class="mt-6">

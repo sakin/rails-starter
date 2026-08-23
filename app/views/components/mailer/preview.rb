@@ -7,6 +7,6 @@ class Mailer::Preview < ApplicationViewComponentPreview
     user = User.new(email_address: "hello@example.com")
     html = NotificationsMailer.welcome(user).message.html_part.body.decoded
 
-    render_component Mailer::Component.new(subject: "Welcome", html: html)
+    render Mailer::Component.new(subject: "Welcome", html: html)
   end
 end
