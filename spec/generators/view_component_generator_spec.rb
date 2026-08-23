@@ -61,6 +61,14 @@ RSpec.describe(ViewComponentGenerator, type: :generator) do
     expect(component).to include("option :age")
   end
 
+  it "emits a typed Dry::Initializer option from declared attribute types" do
+    generate("PostCard", "age:integer", "active:boolean")
+
+    component = file("app/views/components/post_card/component.rb").read
+    expect(component).to include("option :age, type: Dry::Types[\"params.integer\"]")
+    expect(component).to include("option :active, type: Dry::Types[\"params.bool\"]")
+  end
+
   it "scopes nested component names and class tokens correctly" do
     generate("admin/sidebar")
 

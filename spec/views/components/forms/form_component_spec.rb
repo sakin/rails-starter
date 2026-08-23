@@ -14,4 +14,8 @@ RSpec.describe(Forms::Form::Component, type: :view_component) do
   it "yields its block inside the form" do
     expect(rendered).to have_css("form input.input")
   end
+
+  it "coerces a string method to a symbol" do
+    expect(described_class.new(action: "/", method: "post").method).to eq(:post)
+  end
 end

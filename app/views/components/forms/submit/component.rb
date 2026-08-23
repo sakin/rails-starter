@@ -7,7 +7,7 @@
 # tailwind_merge postprocessor.
 class Forms::Submit::Component < ApplicationViewComponent
   option :label
-  option :variant, default: -> { :primary }
+  option :variant, type: Dry::Types["coercible.symbol"], default: -> { :primary }
 
   style do
     base { %w[btn] }

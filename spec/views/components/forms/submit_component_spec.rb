@@ -36,4 +36,12 @@ RSpec.describe(Forms::Submit::Component, type: :view_component) do
       expect(rendered).to have_css("button.btn.btn-primary.w-full")
     end
   end
+
+  context "with a string variant (from a param)" do
+    subject(:rendered) { render_inline(described_class.new(label: "Save", variant: "outline")) }
+
+    it "coerces the string to the :outline symbol so StyleVariants matches" do
+      expect(rendered).to have_css("button.btn.btn-outline")
+    end
+  end
 end

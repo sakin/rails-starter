@@ -5,7 +5,7 @@
 class Forms::Radio::Component < ApplicationViewComponent
   option :name
   option :value
-  option :checked, default: -> { false }
+  option :checked, type: Dry::Types["params.bool"], default: -> { false }
 
   def root_options
     element_attrs(

@@ -5,7 +5,7 @@
 # as a block, so callers stay free to use `form_with`, raw inputs, or this forms family.
 class Forms::Form::Component < ApplicationViewComponent
   option :action
-  option :method, default: -> { :post }
+  option :method, type: Dry::Types["coercible.symbol"], default: -> { :post }
 
   def root_options
     element_attrs(action: action, method: method)

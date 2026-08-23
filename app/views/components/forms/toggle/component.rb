@@ -5,7 +5,7 @@
 class Forms::Toggle::Component < ApplicationViewComponent
   option :name
   option :value, default: -> { "1" }
-  option :checked, default: -> { false }
+  option :checked, type: Dry::Types["params.bool"], default: -> { false }
 
   def root_options
     element_attrs(

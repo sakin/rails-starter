@@ -6,7 +6,7 @@ class Forms::Select::Component < ApplicationViewComponent
   option :name
   option :options, default: -> { [] }
   option :selected, default: -> { nil }
-  option :include_blank, default: -> { false }
+  option :include_blank, type: Dry::Types["params.bool"], default: -> { false }
 
   def root_options
     element_attrs(

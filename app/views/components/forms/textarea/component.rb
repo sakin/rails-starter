@@ -5,7 +5,7 @@
 class Forms::Textarea::Component < ApplicationViewComponent
   option :name
   option :value, default: -> { nil }
-  option :rows, default: -> { 3 }
+  option :rows, type: Dry::Types["params.integer"], default: -> { 3 }
 
   def root_options
     element_attrs(

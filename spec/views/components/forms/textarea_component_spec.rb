@@ -18,4 +18,8 @@ RSpec.describe(Forms::Textarea::Component, type: :view_component) do
       expect(rendered).to have_css("textarea[required='required']")
     end
   end
+
+  it "coerces a string rows to an integer" do
+    expect(described_class.new(name: "message", value: "Hello", rows: "5").rows).to eq(5)
+  end
 end

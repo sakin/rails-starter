@@ -56,7 +56,14 @@ component folder mirrored).
 
 - `component-scoped i18n` via `t(".key")` → `en.view_components.<scope>` and the
   `#wrapped` helper (from `ViewComponentContrib::Base`).
-- `Dry::Initializer` — extend it in your component to declare args.
+- `Dry::Initializer` — extend it in your component to declare args. Coerce
+  values at the option boundary with `dry-types` where a caller could pass an
+  untyped string: symbols via `Dry::Types["coercible.symbol"]` (e.g.
+  `Forms::Submit#variant`, `Forms::Form#method`), booleans via
+  `Dry::Types["params.bool"]` (`checked`, `include_blank`), integers via
+  `Dry::Types["params.integer"]` (`rows`). `dry-types` is loaded at boot
+  (`config/initializers/dry_types.rb`); the generator emits a typed `option`
+  from declared attribute types (`rails g view_component Profile age:integer`).
 - `DbQueryGuard` — any DB query during render raises unless the component opts
   out with `self.allow_db_queries = true`.
 - `class_for(token)` — a scoped CSS token (`c-<controller>-<token>`, e.g.
