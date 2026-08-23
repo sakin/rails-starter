@@ -8,11 +8,13 @@
 # app-wide `ApplicationFormBuilder` default) — the field-inclusive path in which
 # `f.text_field :email, label: "Email"` composes `Forms::Field` + control.
 class Forms::Preview < ApplicationViewComponentPreview
-  def default
-    render_with
+  # @param show_errors [Boolean] "Show a validation error on every field"
+  def default(show_errors: false)
+    render_with(errors: show_errors)
   end
 
-  def builder
-    render_with
+  # @param show_errors [Boolean] "Show a validation error on every field"
+  def builder(show_errors: false)
+    render_with(errors: show_errors)
   end
 end

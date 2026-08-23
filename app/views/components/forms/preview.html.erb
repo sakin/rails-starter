@@ -1,22 +1,25 @@
 <!-- Preview template for the full forms family. Uses `component` exactly as the
-     app does so Lookbook renders byte-for-byte what views render. -->
+     app does so Lookbook renders byte-for-byte what views render. When the
+     `show_errors` Lookbook param is on, every field surfaces a validation error
+     to document the field-inclusive error path. -->
+<% errors = local_assigns[:errors] %>
 <%= component "forms/form", action: "/", method: :post do %>
-  <%= component "forms/field", label: "Text input" do %>
+  <%= component "forms/field", label: "Text input", error_message: (errors ? "can't be blank" : nil) do %>
     <%= component "forms/text", name: "text" %>
   <% end %>
-  <%= component "forms/field", label: "Textarea" do %>
+  <%= component "forms/field", label: "Textarea", error_message: (errors ? "is too long (maximum is 500 characters)" : nil) do %>
     <%= component "forms/textarea", name: "textarea" %>
   <% end %>
-  <%= component "forms/field", label: "Select" do %>
+  <%= component "forms/field", label: "Select", error_message: (errors ? "can't be blank" : nil) do %>
     <%= component "forms/select", name: "select", options: [["Option one", "one"], ["Option two", "two"]] %>
   <% end %>
-  <%= component "forms/field", label: "Checkbox" do %>
+  <%= component "forms/field", label: "Checkbox", error_message: (errors ? "must be accepted" : nil) do %>
     <%= component "forms/checkbox", name: "checkbox" %>
   <% end %>
-  <%= component "forms/field", label: "Radio" do %>
+  <%= component "forms/field", label: "Radio", error_message: (errors ? "select a plan" : nil) do %>
     <%= component "forms/radio", name: "radio", value: "1" %>
   <% end %>
-  <%= component "forms/field", label: "Toggle" do %>
+  <%= component "forms/field", label: "Toggle", error_message: (errors ? "must be set" : nil) do %>
     <%= component "forms/toggle", name: "toggle", checked: true %>
   <% end %>
   <%= component "forms/submit", label: "Submit" %>
