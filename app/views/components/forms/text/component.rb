@@ -12,7 +12,7 @@ class Forms::Text::Component < ApplicationViewComponent
   option :name
   option :value, default: -> { nil }
   option :type, default: -> { "text" }
-  option :variant, type: ->(value) { value.to_sym }, default: -> { :default }
+  option :variant, type: Dry::Types["coercible.symbol"], default: -> { :default }
   option :label, default: -> { nil }
 
   def floating?

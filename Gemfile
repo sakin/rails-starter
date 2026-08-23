@@ -51,8 +51,10 @@ gem "view_component"
 # preview base classes, and a project-owned component generator.
 gem "view_component-contrib"
 # Declarative component arguments: `option :title` instead of a hand-written
-# initializer (per the starter's PRD view-layer conventions).
+# initializer (per the starter's PRD view-layer conventions). Used with dry-types
+# so options can coerce/validate values (e.g. a Lookbook string param -> Symbol).
 gem "dry-initializer"
+gem "dry-types"
 # Merge conflicting Tailwind/daisyUI utility classes in the StyleVariants
 # post-processor so caller overrides beat component defaults.
 gem "tailwind_merge"
