@@ -42,12 +42,15 @@ rather than drifting to synonyms.
 - **component arguments** — the common root-level arguments every view component
   accepts: `attrs` (pass-through HTML attributes), plus the promoted `class`,
   `id`, and `data` (deep-merged over the component's own data). Merged by
-  `element_options` into the root element's attribute hash; a component's style
+  `element_attrs` into the root element's attribute hash; a component's style
   variants and defaults come first, so any caller-supplied `class`/`data` overrides
   them. `id` is `attrs[:id]` sugar, not merged.
-- **modal** — `Modal::Component`, a daisyUI `<dialog>` whose open/close need JS
-  (`dialog.showModal()`), driven by its co-located `modal` Stimulus controller —
-  the reference for a component that genuinely needs its own behaviour.
+- **modal** — `Modal::Component`, a daisyUI `<dialog>` that owns dismissal only:
+  its co-located `modal` Stimulus controller closes it (`dialog.close()` via
+  `click->modal#close` on the backdrop/close button). Opening (`dialog.showModal()`)
+  is the caller's job via an external trigger (e.g. the flat `modal-open`
+  controller targeting the dialog `id`) — the reference for a component that
+  genuinely needs its own behaviour without owning the whole interaction.
 - **layout** — `Layout::Component`, the single default layout that owns the
   full HTML document (head, Vite/CSRF/CSP tags, nav + flash region) and yields
   the page body. Wired from `app/views/layouts/application.html.erb`.

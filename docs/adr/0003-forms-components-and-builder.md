@@ -33,7 +33,10 @@ and re-home the old primitives inside it:
   overrides** for all six controls (`text_field`, `text_area`, `select`,
   `check_box`, `radio_button`, `toggle`) plus `submit`:
   `f.text_field :email, label: "Email"` composes `Forms::Field` + `Forms::Text` in
-  one call; `label: false` opts out. `form_with` still owns the `<form>` tag.
+  one call; `label: false` opts out. `check_box` and `toggle` (and the bare
+  `Forms::Checkbox`/`Forms::Toggle` components) deliberately omit Rails' hidden
+  unchecked `0` twin, so an unchecked box/toggle submits nothing; `value` and a
+  boolean `checked` are the component contract. `form_with` still owns the `<form>` tag.
   `lib/` is the home because a form builder is framework tooling, not a domain
   form object — `app/forms/` stays reserved for screen-specific form objects per
   directory-conventions.md.
@@ -51,12 +54,20 @@ and re-home the old primitives inside it:
 **Co-located Stimulus controllers:** a component's controller ships beside it
 (e.g. `app/views/components/modal/component_controller.js`) rather than in
 `app/frontend/controllers/`. The entrypoint globs these and registers each by
-folder path (`/` → `--`), so the id always equals the component's `controller_name`
-(no special-casing between server CSS tokens and client controllers). Flat
-standalone controllers (`theme`, `hello`) are unchanged. `Modal` is the reference:
-a daisyUI `<dialog>` whose open/close genuinely need JS (`dialog.showModal()`),
-wired through `data-action="click->modal#open"` and exercised by a real-browser
-system test (`spec/system/modal_spec.rb`).
+folder path (`/` → `--`, with a `component_controller.js` under a folder named for
+that folder), so a co-located id always equals the component's `controller_name`,
+and the `class_for`/`controller_name` tokens line up. Flat standalone controllers
+(`theme`, `hello`) are unchanged and ship in `app/frontend/controllers/`, where the
+entrypoint derives the id from the filename with underscores becoming hyphens
+(`modal_open_controller.js` → `modal-open`). `Modal` is the reference: a daisyUI
+`<dialog>` whose close genuinely needs JS — the component owns dismissal only, wired
+as `data-action="click.self->modal#close"` on the backdrop (the `.self` so only
+clicks on the backdrop, not the modal-box, dismiss it) and `click->modal#close` on
+the close button (`dialog.close()`) — while opening (`dialog.showModal()`) is the
+caller's job via an external trigger, e.g. a flat `modal-open` controller targeting
+the dialog `id` (`data-action="click->modal-open#open"`). Exercised by a real-browser
+system test
+(`spec/system/modal_spec.rb`).
 
 **The floating label, in contrast, needs no JS.** `Forms::Text` with
 `floating_label:` renders daisyUI's `floating-label` wrapper (span before the
@@ -69,7 +80,7 @@ Rule: don't add a controller to a component that daisyUI can style in CSS alone.
 
 **Common component arguments** (`app/views/components/application_view_component.rb`):
 every component accepts `attrs:` (pass-through HTML attrs) plus the promoted
-`class:`, `id:`, and `data:`. `element_options(defaults)` merges them into the
+`class:`, `id:`, and `data:`. `element_attrs(defaults)` merges them into the
 root element's attribute hash: component defaults and style-variant classes first,
 then caller `class:`/`attrs[:class]`, then deep-merged `data:`/`attrs[:data]`,
 so a caller's classes/data always override the component while its daisyUI classes
@@ -88,8 +99,9 @@ sidecar `preview.html.erb` template using the same `component` calls the app use
 so Lookbook output matches app output (and the nested controls actually render).
 A second `builder` scene (`previews/builder.html.erb`) documents the same family
 produced via `form_with` (which uses the `ApplicationFormBuilder` default),
-showing the field-inclusive one-call path. `Modal::Preview` documents the
-JS-backed dialog.
+showing the field-inclusive one-call path. Both scenes take a `show_errors`
+toggle so a Lookbook visitor can preview error rendering. `Modal::Preview`
+documents the JS-backed dialog.
 
 ## Considered options
 
@@ -112,8 +124,9 @@ JS-backed dialog.
   keep the simpler `render_component`.
 - **`Modal` as the JS-backed example instead of the floating label** — the
   floating label turned out to be CSS-only, so it carries no controller; `Modal`
-  (a `<dialog>` that must be opened with `.showModal()`) is the reference for "a
-  component that genuinely needs its own Stimulus controller."
+  (a `<dialog>` whose dismissal must call `dialog.close()`, outside what daisyUI's
+  CSS can express) is the reference for "a component that genuinely needs its own
+  Stimulus controller" without owning the whole open/close interaction.
 
 ## Consequences
 

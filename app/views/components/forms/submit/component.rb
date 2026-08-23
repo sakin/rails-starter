@@ -10,7 +10,7 @@ class Forms::Submit::Component < ApplicationViewComponent
   option :variant, default: -> { :primary }
 
   style do
-    base { %w[btn w-full] }
+    base { %w[btn] }
     variants {
       variant {
         primary { %w[btn-primary] }
@@ -22,9 +22,9 @@ class Forms::Submit::Component < ApplicationViewComponent
   end
 
   def root_options
-    element_options(
+    element_attrs(
       type: "submit",
-      class: style(variant: variant)
+      class: "#{style(variant: variant)} #{class_for("root")}"
     )
   end
 end

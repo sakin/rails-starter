@@ -25,6 +25,6 @@ class Forms::Text::Component < ApplicationViewComponent
     # daisyUI's float keys off `:placeholder-shown`, which needs a placeholder
     # attribute present; ensure one exists so the label always floats correctly.
     options[:placeholder] ||= "" if floating_label
-    element_options(options)
+    element_attrs(options)
   end
 end

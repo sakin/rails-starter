@@ -10,7 +10,7 @@
 # `StyleVariants` gives a declarative `style do ... end` DSL for class variants.
 #
 # Every component accepts the common root arguments `attrs`, `class`, `id`, and
-# `data`, merged by `#options` into one element-attribute hash for the root tag:
+# `data`, merged by `#element_attrs` into one element-attribute hash for the root tag:
 #   - `class`: caller's root `class` + `attrs[:class]` are joined over the
 #     defaults and Tailwind-merged (caller wins); daisyUI classes are preserved.
 #   - `data`: caller's `data` + `attrs[:data]` deep-merge over the defaults.
@@ -38,7 +38,7 @@ class ApplicationViewComponent < ViewComponentContrib::Base
   # The essentials passed as `defaults` (e.g. a control's `name`) win over any
   # `attrs` supplied for the same key, while non-essential caller `attrs` fill in
   # the rest as pass-through. Caller classes/data merge over the component's.
-  def element_options(defaults = {})
+  def element_attrs(defaults = {})
     merged = attrs.except(:class, :id, :data).merge(defaults.deep_dup)
     merged[:class] = merge_classes(defaults[:class], css_class, attrs[:class])
     merged.delete(:class) if merged[:class].empty?

@@ -8,6 +8,11 @@ RSpec.describe(Forms::Submit::Component, type: :view_component) do
     expect(rendered).to have_css("button.btn.btn-primary")
   end
 
+  it "applies the root token class, letting styles.css own the width (no hardcoded w-full)" do
+    expect(rendered).to have_css("button.btn.btn-primary.c-forms--submit-root")
+    expect(rendered).not_to have_css("button.w-full")
+  end
+
   context "with an outline variant" do
     subject(:rendered) { render_inline(described_class.new(label: "Save", variant: :outline)) }
 

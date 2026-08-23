@@ -8,6 +8,6 @@ class Forms::Form::Component < ApplicationViewComponent
   option :method, default: -> { :post }
 
   def root_options
-    element_options(action: action, method: method)
+    element_attrs(action: action, method: method)
   end
 end

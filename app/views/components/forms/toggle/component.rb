@@ -8,7 +8,7 @@ class Forms::Toggle::Component < ApplicationViewComponent
   option :checked, default: -> { false }
 
   def root_options
-    element_options(
+    element_attrs(
       type: "checkbox",
       name: name,
       value: value,

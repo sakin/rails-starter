@@ -8,7 +8,7 @@ class Forms::Radio::Component < ApplicationViewComponent
   option :checked, default: -> { false }
 
   def root_options
-    element_options(
+    element_attrs(
       type: "radio",
       name: name,
       value: value,

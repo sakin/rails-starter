@@ -8,7 +8,7 @@ class Forms::Textarea::Component < ApplicationViewComponent
   option :rows, default: -> { 3 }
 
   def root_options
-    element_options(
+    element_attrs(
       name: name,
       rows: rows,
       class: "textarea textarea-bordered w-full"

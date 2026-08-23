@@ -1,4 +1,4 @@
-<%= content_tag :div, **merged do %>
+<%= content_tag :div, **element_attrs do %>
   <dialog id="<%= id %>" class="modal" data-modal-target="dialog" data-action="click.self->modal#close">
     <div class="modal-box">
       <h3 class="text-lg font-bold"><%= title %></h3>

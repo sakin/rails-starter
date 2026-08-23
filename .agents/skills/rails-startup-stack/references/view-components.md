@@ -68,11 +68,11 @@ component folder mirrored).
   classes pass through, Tailwind utilities conflict-resolve). First proof:
   `Forms::Submit` (`:primary` / `:outline` / `:ghost`).
 - The common **component arguments** (`attrs`, `class`, `id`, `data`) and the
-  `element_options(defaults)` merge — see [Component arguments](#component-arguments) below.
+  `element_attrs(defaults)` merge — see [Component arguments](#component-arguments) below.
 
 ## Component arguments
 
-Every component accepts four root-level arguments, merged by `element_options`
+Every component accepts four root-level arguments, merged by `element_attrs`
 into one attribute hash for the root element (spread with `tag.attributes(**...)`
 or passed to a tag helper):
 

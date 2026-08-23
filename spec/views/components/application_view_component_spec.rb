@@ -17,12 +17,12 @@ RSpec.describe(ApplicationViewComponent, type: :view_component) do
     end
   end
 
-  describe "#element_options" do
+  describe "#element_attrs" do
     context "with a root data arg" do
       let(:constructor_args) { { data: { foo: "baz" } } }
 
       it "deep-merges caller data over component defaults" do
-        merged = component.element_options(class: "c-x", data: { controller: "sample-attrs", foo: "bar" })
+        merged = component.element_attrs(class: "c-x", data: { controller: "sample-attrs", foo: "bar" })
 
         expect(merged[:data]).to eq(controller: "sample-attrs", foo: "baz")
       end
@@ -32,7 +32,7 @@ RSpec.describe(ApplicationViewComponent, type: :view_component) do
       let(:constructor_args) { { class: "btn-outline", attrs: { class: "p-8", data: { controller: "c" } }, data: { action: "x" } } }
 
       it "joins caller class and attrs class over the component default class" do
-        merged = component.element_options(class: "btn")
+        merged = component.element_attrs(class: "btn")
 
         expect(merged[:class]).to eq("btn btn-outline p-8")
         expect(merged[:data]).to eq(action: "x", controller: "c")
@@ -43,7 +43,7 @@ RSpec.describe(ApplicationViewComponent, type: :view_component) do
       let(:constructor_args) { { id: "email", attrs: { required: true } } }
 
       it "passes them through" do
-        merged = component.element_options({})
+        merged = component.element_attrs({})
 
         expect(merged[:id]).to eq("email")
         expect(merged[:required]).to be(true)
@@ -52,7 +52,7 @@ RSpec.describe(ApplicationViewComponent, type: :view_component) do
 
     it "keeps component-internal data when caller data omits it" do
       constructor_args_override = { data: { foo: "baz" } }
-      merged = SampleAttrs::Component.new(**constructor_args_override).element_options(
+      merged = SampleAttrs::Component.new(**constructor_args_override).element_attrs(
         data: { controller: "sample-attrs" }
       )
 

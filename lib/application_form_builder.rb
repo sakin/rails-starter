@@ -11,7 +11,7 @@
 #
 # The `<form>` tag itself is emitted by `form_with`; this builder only owns the
 # fields, so it composes independently of `Forms::Form`. Styling classes live on
-# each control component (their `element_options`); the builder forwards the rest
+# each control component (their `element_attrs`); the builder forwards the rest
 # of the caller's options as `attrs:` (placeholder, required, autofocus, data, ...).
 class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   def text_field(attribute, options = {})

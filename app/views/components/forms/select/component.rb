@@ -9,7 +9,7 @@ class Forms::Select::Component < ApplicationViewComponent
   option :include_blank, default: -> { false }
 
   def root_options
-    element_options(
+    element_attrs(
       name: name,
       class: "select select-bordered w-full"
     )

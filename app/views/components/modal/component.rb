@@ -10,13 +10,10 @@ class Modal::Component < ApplicationViewComponent
   option :title
   option :close_label, default: -> { "Close" }
 
-  def wrapper_options
-    element_options.except(:id)
-  end
-
-  private
-
-  def merged
-    wrapper_options.deep_merge(data: { controller: controller_name })
+  # Wrapper element attrs: the base-merged root args, minus `:id` (the dialog
+  # owns the id, so the wrapper doesn't also carry it), plus the co-located
+  # `modal` Stimulus controller mounted on the wrapper.
+  def element_attrs(defaults = {})
+    super(defaults).deep_merge(data: { controller: controller_name }).except(:id)
   end
 end
