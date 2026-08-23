@@ -1,5 +1,7 @@
 ## Agent skills
 
+Always talk in ASD-STE100 Simplified Technical English. Always read CONTEXT.md files, and use their ubiquitous language.
+
 ### Issue tracker
 
 Issues and specs for this repo live as markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
