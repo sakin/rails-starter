@@ -10,7 +10,7 @@ class Forms::Text::Preview < ApplicationViewComponentPreview
     render_with(
       name: "email",
       placeholder: "you@example.com",
-      variant: variant.to_sym,
+      variant:,
       label: variant.to_s == "floating" ? "Email address" : nil
     )
   end

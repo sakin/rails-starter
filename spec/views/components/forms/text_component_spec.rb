@@ -44,4 +44,14 @@ RSpec.describe(Forms::Text::Component, type: :view_component) do
       expect(rendered).not_to have_css("data-controller")
     end
   end
+
+  context "with a stringy variant (from a Lookbook param)" do
+    subject(:rendered) do
+      render_inline(described_class.new(name: "email", value: "", variant: "floating", label: "Email"))
+    end
+
+    it "coerces the string to the :floating symbol" do
+      expect(rendered).to have_css("label.floating-label > span", text: "Email")
+    end
+  end
 end
